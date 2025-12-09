@@ -1,40 +1,27 @@
+/* ============================================================
+   CSS ESPECÍFICO PARA HISTORIA.PHP
+   ============================================================ */
+
+:root {
+    --primary-color: #1e3a5f;
+    --secondary-color: #5a7bb7;
+    --accent-color: #b3d1f7;
+    --light-bg: #e3ecf7;
+    --text-color: #333;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-  margin: 0;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  background: #f4f8fb;
-}
-
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #0077c2;
-  padding: 1rem 2rem;
-  color: #fff;
-}
-
-.navbar .logo {
-  font-size: 1.8rem;
-  font-weight: bold;
-}
-
-.navbar ul {
-  list-style: none;
-  display: flex;
-  gap: 2rem;
-  margin: 0;
-  padding: 0;
-}
-
-.navbar ul li a {
-  color: #fff;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s;
-}
-
-.navbar ul li a:hover {
-  color: #003366;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-color);
+    background: linear-gradient(135deg, var(--light-bg) 0%, var(--accent-color) 100%);
+    line-height: 1.7;
+    min-height: 100vh;
 }
 
 .section-content {

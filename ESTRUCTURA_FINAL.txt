@@ -1,0 +1,137 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                   ESTRUCTURA FINAL DEL PROYECTO                           ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+PÁGINAS PHP (Frontend Público)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ index.php                    → Página principal con sidebar + tabla
+✓ historia.php                 → Página de historia
+✓ mision.php                   → Página de misión y visión  
+✓ destacado.php                → Página de lo destacado
+✓ opinion.php                  → Página de opinión
+✓ tabla.php                    → Página tabla de posiciones
+
+ARCHIVOS CSS ESPECÍFICOS (Uno por página)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📁 assets/css/
+  ✓ style.css                  → Estilos globales (navbar, footer, etc)
+  ✓ index.css                  → Estilos específicos de index.php
+  ✓ historia.css               → Estilos específicos de historia.php
+  ✓ mision.css                 → Estilos específicos de mision.php
+  ✓ destacado.css              → Estilos específicos de destacado.php
+  ✓ opinion.css                → Estilos específicos de opinion.php
+  ✓ tabla.css                  → Estilos específicos de tabla.php
+  └─ admin/                    → Estilos del panel admin
+
+PANEL DE ADMINISTRACIÓN
+━━━━━━━━━━━━━━━━━━━━━━
+📁 admin/
+  ├── dashboard.php
+  ├── noticias/noticias.php + Modals/
+  ├── tabla_posiciones/tabla_posiciones.php + Modals/
+  └── assets/css/admin/
+
+CONFIGURACIÓN Y AUTENTICACIÓN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📁 config/
+  └── database.php              → Conexión BD + funciones
+📁 includes/
+  └── auth.php                  → Sistema de login/logout
+
+BASE DE DATOS
+━━━━━━━━━━━━
+✓ database.sql                 → Script SQL con 3 tablas
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║                         CARACTERÍSTICAS POR PÁGINA                        ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+INDEX.PHP - PÁGINA PRINCIPAL
+────────────────────────────
+✓ Estructura: Grid (Sidebar + Main Content)
+✓ Sidebar: Misión y Visión con descripción
+✓ Cards: Noticias, Opinión, Lo Último, Historia (con imágenes)
+✓ Tabla de Posiciones: Datos dinámicos desde BD
+✓ Modal Login: Integrado en navbar
+✓ Responsive: Desktop, Tablet, Mobile
+✓ Datos BD: tabla_posiciones (estado='activo')
+
+HISTORIA.PHP
+────────────
+✓ Página completa de historia del club
+✓ Navbar con navegación
+✓ Contenido con imagen principal
+✓ Estilos en historia.css
+✓ Botón "Volver al inicio"
+
+MISION.PHP
+──────────
+✓ Sección Misión
+✓ Sección Visión
+✓ Grid de 4 objetivos estratégicos
+✓ Estilos en mision.css
+✓ Layout responsivo
+
+DESTACADO.PHP
+──────────────
+✓ 2 artículos destacados
+✓ Con imágenes y fechas
+✓ Contenido completo
+✓ Estilos en destacado.css
+
+OPINION.PHP
+───────────
+✓ Artículo de opinión completo
+✓ Secciones organizadas
+✓ Metadatos (autor, fecha)
+✓ Estilos en opinion.css
+
+TABLA.PHP
+──────────
+✓ Tabla dinámica desde BD
+✓ 10 columnas: Pos, Equipo, PJ, G, E, P, GF, GC, DG, Pts
+✓ Colores por zonas: Líder, Clasificados, Descenso
+✓ Información de formato
+✓ Criterios de desempate
+✓ Datos de tabla_posiciones
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║                          PALETA DE COLORES                               ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+Primario:    #1e3a5f (Azul oscuro)
+Secundario:  #5a7bb7 (Azul celeste)
+Acento:      #b3d1f7 (Azul claro)
+Background:  Linear-gradient(#e3ecf7 → #b3d1f7)
+Texto:       #333 (Gris oscuro)
+Éxito:       #51cf66 (Verde)
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║                         VENTAJAS DE LA IMPLEMENTACIÓN                    ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+✓ Cada página tiene su CSS específico → Modificaciones independientes
+✓ Todas las páginas comparten style.css → Estilos globales consistentes
+✓ Integración de autenticación en navbar → Control de acceso
+✓ Datos dinámicos de BD → Información actualizada
+✓ Responsive design → Compatible con todos los dispositivos
+✓ Estructura limpia → Fácil mantenimiento
+✓ Modal login en todas partes → Acceso rápido a admin
+✓ Mismo diseño HTML original → Familiaridad del usuario
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║                              PRÓXIMOS PASOS                               ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+1. Importar database.sql a MySQL
+2. Configurar credenciales en config/database.php
+3. Probar todas las páginas:
+   - http://localhost/ClubBolivar/index.php
+   - http://localhost/ClubBolivar/historia.php
+   - http://localhost/ClubBolivar/mision.php
+   - http://localhost/ClubBolivar/destacado.php
+   - http://localhost/ClubBolivar/opinion.php
+   - http://localhost/ClubBolivar/tabla.php
+4. Testear login con admin/admin123
+5. Verificar tabla dinámica
+6. Testear acceso al panel admin

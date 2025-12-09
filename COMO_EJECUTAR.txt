@@ -1,0 +1,133 @@
+═══════════════════════════════════════════════════════════════════
+                    CÓMO EJECUTAR EL PROYECTO
+═══════════════════════════════════════════════════════════════════
+
+⚠️ IMPORTANTE: No ejecutes PHP archivos directamente con "php index.php"
+              Necesitas un SERVIDOR WEB para que funcione correctamente.
+
+═══════════════════════════════════════════════════════════════════
+OPCIÓN 1: USAR PHP BUILT-IN SERVER (Recomendado - Más fácil)
+═══════════════════════════════════════════════════════════════════
+
+Comando:
+  cd C:\Users\GUILDER\Desktop\PTRABAJO\ClubBolivar
+  php -S localhost:8000
+
+Luego abre en el navegador:
+  http://localhost:8000/index.php
+
+O directamente la homepage:
+  http://localhost:8000/
+
+✓ Ventajas:
+  - No requiere instalación
+  - Fácil de usar
+  - Perfecto para desarrollo
+
+═══════════════════════════════════════════════════════════════════
+OPCIÓN 2: USAR APACHE (Si ya está instalado)
+═══════════════════════════════════════════════════════════════════
+
+1. Copiar proyecto a:
+   C:\Apache24\htdocs\ClubBolivar\
+
+2. En navegador:
+   http://localhost/ClubBolivar/index.php
+
+═══════════════════════════════════════════════════════════════════
+OPCIÓN 3: USAR XAMPP (Si está instalado)
+═══════════════════════════════════════════════════════════════════
+
+1. Copiar proyecto a:
+   C:\xampp\htdocs\ClubBolivar\
+
+2. Iniciar Apache desde XAMPP Control Panel
+
+3. En navegador:
+   http://localhost/ClubBolivar/index.php
+
+═══════════════════════════════════════════════════════════════════
+PROBLEMA ACTUAL Y SOLUCIÓN
+═══════════════════════════════════════════════════════════════════
+
+Error encontrado:
+  ✗ $conexion no está definida (se llama $conn en database.php)
+  
+Solución aplicada:
+  ✓ Se corrigió index.php
+  ✓ Se corrigió tabla.php
+  ✓ Ahora usan $conn correctamente
+
+═══════════════════════════════════════════════════════════════════
+PREREQUISITOS
+═══════════════════════════════════════════════════════════════════
+
+ANTES de ejecutar, necesitas:
+
+1. ✓ Base de datos MySQL creada: "club_bolivar"
+   
+   mysql -u root -p
+   CREATE DATABASE club_bolivar;
+   USE club_bolivar;
+   SOURCE database.sql;
+
+2. ✓ Editar config/database.php con tus credenciales:
+   const DB_USER = 'root';
+   const DB_PASS = 'tu_contraseña';
+   const DB_NAME = 'club_bolivar';
+
+3. ✓ PHP 7.4+ instalado
+
+4. ✓ MySQL Server corriendo
+
+═══════════════════════════════════════════════════════════════════
+COMANDO RECOMENDADO PARA EJECUTAR
+═══════════════════════════════════════════════════════════════════
+
+1. Abre PowerShell como Administrador
+
+2. Ejecuta:
+   cd C:\Users\GUILDER\Desktop\PTRABAJO\ClubBolivar
+   php -S localhost:8000
+
+3. Abre navegador y ve a:
+   http://localhost:8000/index.php
+
+Verás:
+   ✓ Navbar con navegación
+   ✓ Tabla de posiciones (si la BD está lista)
+   ✓ Modal de login
+   ✓ Contenido dinámico
+
+═══════════════════════════════════════════════════════════════════
+SI QUIERES PROBAR SOLO LA CONEXIÓN
+═══════════════════════════════════════════════════════════════════
+
+Crea un archivo test.php en ClubBolivar/:
+
+<?php
+require 'config/database.php';
+
+if ($conn->connect_error) {
+    echo "❌ Error de conexión: " . $conn->connect_error;
+} else {
+    echo "✓ Conexión exitosa!";
+    echo "<br>✓ Base de datos: " . DB_NAME;
+}
+?>
+
+Luego ejecuta:
+   php -S localhost:8000
+   
+Y abre:
+   http://localhost:8000/test.php
+
+═══════════════════════════════════════════════════════════════════
+ARCHIVOS CORREGIDOS
+═══════════════════════════════════════════════════════════════════
+
+✓ index.php       - Cambio: $conexion → $conn
+✓ tabla.php       - Cambio: $conexion → $conn
+✓ Otros PHP       - Ya usan $conn correctamente
+
+═══════════════════════════════════════════════════════════════════
