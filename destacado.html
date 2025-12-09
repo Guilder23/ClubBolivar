@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="assets/css/destacado.css">
 </head>
 <body>
-  <nav class="navbar">
+  <nav class="navbar-fixed">
     <div class="logo">Club Bolívar</div>
     <ul>
       <li><a href="index.html">Inicio</a></li>
@@ -18,13 +18,51 @@
       <li><a href="tabla.html">Tabla</a></li>
     </ul>
   </nav>
-  <main class="section-content">
-    <h1>Destacado</h1>
-    <img src="assets/img/destacado.jpg" alt="Destacado" style="max-width:400px;width:100%;border-radius:16px;">
-    <h2>Título xospapxsax</h2>
-    <p>Tres minutos de pausa. Debido a las altas temperaturas, la FIFA anunció que previa decisión del árbitro habrá tres minutos de hidratación en cada tiempo (cooling break).</p>
-    <a href="index.html" class="btn">Volver al inicio</a>
+
+  <main class="page-container">
+    <div class="page-header">
+      <img src="assets/img/ultimo.jpg" alt="Destacado">
+      <h1>Lo Destacado</h1>
+    </div>
+
+    <div class="page-content">
+      <section class="content-section">
+        <div class="section-header">
+          <h2>Noticias Recientes</h2>
+          <div class="header-line"></div>
+        </div>
+        
+        <article class="featured-card">
+          <img src="assets/img/gol.jpg" alt="Gol">
+          <div class="featured-card-content">
+            <h3>Victoria Contando los Minutos</h3>
+            <p class="author">Publicado el 9 de diciembre 2025</p>
+            <p>Fueron 10 minutos largos, porque Independiente buscaba el empate y nuestro equipo parecía estar con las piernas gastadas. El final se hizo esperar y festejamos otro triunfo de visitante, esta vez en la Capital. Una victoria que vale por dos, que nos acerca más al objetivo de la temporada.</p>
+            <p>La defensa se mantuvo sólida ante el asedio rival, mientras que nuestro mediocampo controló los tiempos del juego de manera inteligente. Los delanteros, aunque tuvieron pocas oportunidades, las aprovecharon con eficiencia cuando fue necesario.</p>
+          </div>
+        </article>
+
+        <article class="featured-card">
+          <img src="assets/img/stadio.jpg" alt="Estadio">
+          <div class="featured-card-content">
+            <h3>Preparación para el Próximo Partido</h3>
+            <p class="author">Publicado el 8 de diciembre 2025</p>
+            <p>El equipo continúa su preparación de cara al próximo enfrentamiento. Los entrenamientos han sido intensivos y el cuerpo técnico ha estado enfocado en mejorar aspectos defensivos y ofensivos que resultaron vulnerables en el último encuentro.</p>
+            <p>La dirigencia confirmó que todos los jugadores se encuentran en óptimas condiciones físicas y mentales para afrontar los desafíos que vienen. Se espera un partido emocionante donde Club Bolívar buscará mantener su racha ganadora.</p>
+          </div>
+        </article>
+      </section>
+    </div>
+
+    <a href="index.html" class="btn-back">← Volver al inicio</a>
   </main>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <p>&copy; 2025 Club Bolívar - Todos los derechos reservados</p>
+    </div>
+  </footer>
+
   <script src="assets/js/destacado.js"></script>
 </body>
 </html>

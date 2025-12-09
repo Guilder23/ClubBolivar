@@ -1,33 +1,39 @@
-body {
-  margin: 0;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  background: #f4f8fb;
+/* ===== IMPORTAR ESTILOS COMUNES ===== */
+@import url('./pages.css');
+
+/* ===== ESTILOS ESPECÍFICOS PARA DESTACADO ===== */
+.featured-card {
+  background: #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(30,58,95,0.1);
+  transition: all 0.3s ease;
+  margin-bottom: 2rem;
 }
 
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #0077c2;
-  padding: 1rem 2rem;
-  color: #fff;
+.featured-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(30,58,95,0.15);
 }
 
-.navbar .logo {
-  font-size: 1.8rem;
-  font-weight: bold;
+.featured-card img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
 }
 
-.navbar ul {
-  list-style: none;
-  display: flex;
-  gap: 2rem;
-  margin: 0;
-  padding: 0;
+.featured-card-content {
+  padding: 2rem;
 }
 
-.navbar ul li a {
-  color: #fff;
+.featured-card h3 {
+  color: #1e3a5f;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.featured-card p {
+  color: #5a7bb7;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s;

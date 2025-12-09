@@ -1,33 +1,42 @@
-body {
-  margin: 0;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  background: #f4f8fb;
+/* ===== IMPORTAR ESTILOS COMUNES ===== */
+@import url('./pages.css');
+
+/* ===== ESTILOS ESPECÍFICOS PARA TABLA ===== */
+.standings-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(30,58,95,0.1);
 }
 
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #0077c2;
-  padding: 1rem 2rem;
+.standings-table thead {
+  background: linear-gradient(90deg, #1e3a5f, #5a7bb7);
   color: #fff;
 }
 
-.navbar .logo {
-  font-size: 1.8rem;
-  font-weight: bold;
+.standings-table th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
 }
 
-.navbar ul {
-  list-style: none;
-  display: flex;
-  gap: 2rem;
-  margin: 0;
-  padding: 0;
+.standings-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #e0e8f0;
 }
 
-.navbar ul li a {
-  color: #fff;
+.standings-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.standings-table tbody tr:nth-child(1) {
+  background: #e3ecf7;
+  font-weight: 600;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s;
