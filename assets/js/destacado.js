@@ -1,1 +1,1 @@
-// JS para destacado.html
+
