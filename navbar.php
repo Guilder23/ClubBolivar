@@ -2,8 +2,8 @@
 // ===== NAVBAR INCLUIBLE PARA TODAS LAS PÁGINAS =====
 // Incluir en todas las páginas: <?php include 'navbar.php'; ?>
 
-// Incluir funciones globales
-require_once __DIR__ . '/includes/functions.php';
+// Incluir configuración y funciones
+require_once __DIR__ . '/config/database.php';
 ?>
 
 <nav class="navbar-fixed">

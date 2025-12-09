@@ -1,5 +1,6 @@
 <?php
-session_start();
+// Incluir configuración
+require_once __DIR__ . '/../config/database.php';
 
 // ===== PROCESAR LOGIN =====
 $error_login = '';

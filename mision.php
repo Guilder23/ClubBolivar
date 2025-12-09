@@ -1,6 +1,6 @@
 <?php
-// Incluir funciones globales
-require_once __DIR__ . '/includes/functions.php';
+// Incluir configuración
+require_once __DIR__ . '/config/database.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">

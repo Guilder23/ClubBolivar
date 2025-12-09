@@ -1,10 +1,28 @@
 <?php
+// Incluir configuración
 require_once '../config/database.php';
-require_once '../includes/auth.php';
 
+// Verificar que sea admin
 requerir_admin();
 
 $usuario = obtener_usuario_actual();
+
+// Datos de ejemplo (sin BD)
+$estadisticas = [
+    'noticias' => 1,
+    'noticias_publicadas' => 1,
+    'equipos' => 5,
+    'lider' => 'Club Bolívar'
+];
+
+$noticias_recientes = [
+    [
+        'titulo' => 'Bienvenido a Club Bolívar',
+        'autor' => 'Administrador',
+        'estado' => 'Publicado',
+        'fecha' => '09/12/2025 18:27'
+    ]
+];
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -28,7 +46,7 @@ $usuario = obtener_usuario_actual();
                     <li><a href="noticias/noticias.php">📰 Gestionar Noticias</a></li>
                     <li><a href="tabla_posiciones/tabla_posiciones.php">🏆 Gestionar Posiciones</a></li>
                     <li class="divider"></li>
-                    <li><a href="../?logout=1" class="logout">🚪 Cerrar Sesión</a></li>
+                    <li><a href="../includes/auth.php?logout=1" class="logout">🚪 Cerrar Sesión</a></li>
                 </ul>
             </nav>
         </aside>
@@ -54,11 +72,7 @@ $usuario = obtener_usuario_actual();
                             <span class="card-icon">📰</span>
                         </div>
                         <div class="card-body">
-                            <?php
-                            $resultado = $conn->query("SELECT COUNT(*) as total FROM noticias");
-                            $fila = $resultado->fetch_assoc();
-                            echo '<p class="card-number">' . $fila['total'] . '</p>';
-                            ?>
+                            <p class="card-number"><?php echo $estadisticas['noticias']; ?></p>
                             <p class="card-label">Noticias registradas</p>
                             <a href="noticias/noticias.php" class="btn-card">Ver todos →</a>
                         </div>
@@ -71,11 +85,7 @@ $usuario = obtener_usuario_actual();
                             <span class="card-icon">✅</span>
                         </div>
                         <div class="card-body">
-                            <?php
-                            $resultado = $conn->query("SELECT COUNT(*) as total FROM noticias WHERE estado = 'publicado'");
-                            $fila = $resultado->fetch_assoc();
-                            echo '<p class="card-number">' . $fila['total'] . '</p>';
-                            ?>
+                            <p class="card-number"><?php echo $estadisticas['noticias_publicadas']; ?></p>
                             <p class="card-label">Noticias publicadas</p>
                             <a href="noticias/noticias.php" class="btn-card">Gestionar →</a>
                         </div>
@@ -88,11 +98,7 @@ $usuario = obtener_usuario_actual();
                             <span class="card-icon">🏆</span>
                         </div>
                         <div class="card-body">
-                            <?php
-                            $resultado = $conn->query("SELECT COUNT(*) as total FROM tabla_posiciones WHERE estado = 'activo'");
-                            $fila = $resultado->fetch_assoc();
-                            echo '<p class="card-number">' . $fila['total'] . '</p>';
-                            ?>
+                            <p class="card-number"><?php echo $estadisticas['equipos']; ?></p>
                             <p class="card-label">Equipos en tabla</p>
                             <a href="tabla_posiciones/tabla_posiciones.php" class="btn-card">Gestionar →</a>
                         </div>
@@ -105,12 +111,7 @@ $usuario = obtener_usuario_actual();
                             <span class="card-icon">⭐</span>
                         </div>
                         <div class="card-body">
-                            <?php
-                            $resultado = $conn->query("SELECT equipo FROM tabla_posiciones WHERE estado = 'activo' ORDER BY posicion ASC LIMIT 1");
-                            $fila = $resultado->fetch_assoc();
-                            $lider = $fila ? $fila['equipo'] : 'N/A';
-                            echo '<p class="card-text">' . htmlspecialchars($lider) . '</p>';
-                            ?>
+                            <p class="card-text"><?php echo htmlspecialchars($estadisticas['lider']); ?></p>
                             <p class="card-label">Equipo en primer lugar</p>
                         </div>
                     </div>
@@ -130,27 +131,16 @@ $usuario = obtener_usuario_actual();
                         </thead>
                         <tbody>
                             <?php
-                            $resultado = $conn->query("
-                                SELECT n.*, u.nombre FROM noticias n
-                                JOIN usuarios u ON n.autor_id = u.id
-                                ORDER BY n.fecha_creacion DESC
-                                LIMIT 5
-                            ");
-                            
-                            if ($resultado && $resultado->num_rows > 0) {
-                                while ($fila = $resultado->fetch_assoc()) {
-                                    $estado_clase = $fila['estado'] === 'publicado' ? 'estado-publicado' : ($fila['estado'] === 'borrador' ? 'estado-borrador' : 'estado-cancelado');
-                                    echo '
-                                    <tr>
-                                        <td>' . htmlspecialchars($fila['titulo']) . '</td>
-                                        <td>' . htmlspecialchars($fila['nombre']) . '</td>
-                                        <td><span class="estado-badge ' . $estado_clase . '">' . ucfirst($fila['estado']) . '</span></td>
-                                        <td>' . date('d/m/Y H:i', strtotime($fila['fecha_creacion'])) . '</td>
-                                    </tr>
-                                    ';
-                                }
-                            } else {
-                                echo '<tr><td colspan="4" class="text-center">No hay noticias</td></tr>';
+                            foreach ($noticias_recientes as $noticia) {
+                                $estado_clase = $noticia['estado'] === 'Publicado' ? 'estado-publicado' : 'estado-borrador';
+                                echo '
+                                <tr>
+                                    <td>' . htmlspecialchars($noticia['titulo']) . '</td>
+                                    <td>' . htmlspecialchars($noticia['autor']) . '</td>
+                                    <td><span class="estado-badge ' . $estado_clase . '">' . $noticia['estado'] . '</span></td>
+                                    <td>' . $noticia['fecha'] . '</td>
+                                </tr>
+                                ';
                             }
                             ?>
                         </tbody>

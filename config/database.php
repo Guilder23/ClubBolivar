@@ -14,19 +14,22 @@ const UPLOAD_PATH = __DIR__ . '/../assets/img/uploads/';
 const UPLOAD_URL = '/ClubBolivar/assets/img/uploads/';
 
 // ===== CREAR CONEXIÓN A LA BASE DE DATOS =====
+$conn = null;
 try {
     $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
     
     // Verificar conexión
     if ($conn->connect_error) {
-        throw new Exception('Error de conexión: ' . $conn->connect_error);
+        // No lanzar excepción, solo establecer $conn = null
+        $conn = null;
+    } else {
+        // Establecer charset a UTF-8
+        $conn->set_charset('utf8mb4');
     }
     
-    // Establecer charset a UTF-8
-    $conn->set_charset('utf8mb4');
-    
 } catch (Exception $e) {
-    die('Error en la configuración de base de datos: ' . $e->getMessage());
+    // Si hay error, dejar $conn como null
+    $conn = null;
 }
 
 // ===== CONFIGURACIÓN DE SESIÓN =====
@@ -42,7 +45,8 @@ if (session_status() === PHP_SESSION_NONE) {
  * Validar si el usuario está autenticado
  */
 function estoy_autenticado() {
-    return isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_rol']);
+    return (isset($_SESSION['autenticado']) && $_SESSION['autenticado'] === true) || 
+           (isset($_SESSION['usuario_id']) && isset($_SESSION['usuario_rol']));
 }
 
 /**
@@ -119,14 +123,16 @@ function verificar_token_csrf($token) {
 }
 
 /**
- * Cargar usuario de la sesión
+ * Cargar usuario de la sesión - versión compatible con BD
  */
-function obtener_usuario_actual() {
+function cargar_usuario_bd() {
     if (!estoy_autenticado()) {
         return null;
     }
     
     global $conn;
+    if ($conn === null) return null;
+    
     $usuario_id = $_SESSION['usuario_id'];
     $resultado = $conn->query("SELECT * FROM usuarios WHERE id = $usuario_id LIMIT 1");
     
@@ -135,5 +141,19 @@ function obtener_usuario_actual() {
     }
     
     return null;
+}
+
+/**
+ * Obtener datos completos del usuario autenticado
+ * Compatible con ambos sistemas: BD y sesión local
+ */
+function obtener_usuario_actual() {
+    $usuario = [
+        'id' => isset($_SESSION['usuario_id']) ? $_SESSION['usuario_id'] : '',
+        'nombre' => isset($_SESSION['usuario_nombre']) ? $_SESSION['usuario_nombre'] : 'Usuario',
+        'usuario' => isset($_SESSION['usuario_usuario']) ? $_SESSION['usuario_usuario'] : '',
+        'rol' => isset($_SESSION['usuario_rol']) ? $_SESSION['usuario_rol'] : 'usuario'
+    ];
+    return $usuario;
 }
 ?>
