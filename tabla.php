@@ -23,93 +23,61 @@ $tabla_posiciones = [
 <body>
     <?php include 'navbar.php'; ?>
 
-    <main class="page-container">
-        <div class="page-header">
-            <h1>Tabla de Posiciones</h1>
-            <p class="subtitle">Temporada 2025 - Liga Profesional Boliviana</p>
-        </div>
+    <main class="section-content">
+        <h1>Tabla de Posiciones</h1>
+        <p style="text-align: center; font-size: 1.1rem; color: #718096; margin-bottom: 2rem;">Temporada 2025 - Liga Profesional Boliviana</p>
 
-        <div class="page-content">
-            <section class="table-section">
-                <table class="standings-table">
-                    <thead>
-                        <tr>
-                            <th class="pos">Pos.</th>
-                            <th class="team">Equipo</th>
-                            <th class="stat">PJ</th>
-                            <th class="stat">G</th>
-                            <th class="stat">E</th>
-                            <th class="stat">P</th>
-                            <th class="stat">GF</th>
-                            <th class="stat">GC</th>
-                            <th class="stat">DG</th>
-                            <th class="stat points">Pts</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php 
-                        $pos = 1;
-                        foreach($tabla_posiciones as $equipo): 
-                            $clase_fila = '';
-                            if ($pos == 1) $clase_fila = 'lider';
-                            elseif ($pos <= 4) $clase_fila = 'clasificado';
-                            elseif ($pos >= 10) $clase_fila = 'descendencia';
-                        ?>
-                        <tr class="<?php echo $clase_fila; ?>">
-                            <td class="pos"><strong><?php echo $pos; ?></strong></td>
-                            <td class="team"><?php echo $equipo['equipo']; ?></td>
-                            <td class="stat"><?php echo $equipo['partidos']; ?></td>
-                            <td class="stat"><?php echo $equipo['ganados']; ?></td>
-                            <td class="stat"><?php echo $equipo['empatados']; ?></td>
-                            <td class="stat"><?php echo $equipo['perdidos']; ?></td>
-                            <td class="stat"><?php echo $equipo['gf']; ?></td>
-                            <td class="stat"><?php echo $equipo['gc']; ?></td>
-                            <td class="stat"><?php echo ($equipo['diferencia_goles'] >= 0 ? '+' : '') . $equipo['diferencia_goles']; ?></td>
-                            <td class="stat points"><strong><?php echo $equipo['puntos']; ?></strong></td>
-                        </tr>
-                        <?php 
+        <div class="standings-wrapper">
+            <table class="standings-table">
+                <thead>
+                    <tr>
+                        <th>Pos.</th>
+                        <th>Equipo</th>
+                        <th>PJ</th>
+                        <th>G</th>
+                        <th>E</th>
+                        <th>P</th>
+                        <th>GF</th>
+                        <th>GC</th>
+                        <th>DG</th>
+                        <th>Pts</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php 
+                    $pos = 1;
+                    foreach($tabla_posiciones as $equipo): 
+                    ?>
+                    <tr>
+                        <td><span class="position-badge"><?php echo $pos; ?></span></td>
+                        <td><strong><?php echo $equipo['equipo']; ?></strong></td>
+                        <td><?php echo $equipo['partidos']; ?></td>
+                        <td><?php echo $equipo['ganados']; ?></td>
+                        <td><?php echo $equipo['empatados']; ?></td>
+                        <td><?php echo $equipo['perdidos']; ?></td>
+                        <td><?php echo $equipo['gf']; ?></td>
+                        <td><?php echo $equipo['gc']; ?></td>
+                        <td><?php echo ($equipo['diferencia_goles'] >= 0 ? '+' : '') . $equipo['diferencia_goles']; ?></td>
+                        <td><strong><?php echo $equipo['puntos']; ?></strong></td>
+                    </tr>
+                    <?php 
                         $pos++;
                         endforeach; 
                         ?>
-                    </tbody>
-                </table>
-
-                <div class="table-legend">
-                    <div class="legend-item lider">Líder</div>
-                    <div class="legend-item clasificado">Clasificado a Copa</div>
-                    <div class="legend-item descendencia">Zona de Descenso</div>
-                </div>
-            </section>
-
-            <section class="info-section">
-                <h2>Información de la Temporada</h2>
-                <div class="info-grid">
-                    <div class="info-card">
-                        <h3>Formato</h3>
-                        <p>Liga Profesional Boliviana - Torneo de todos contra todos</p>
-                    </div>
-                    <div class="info-card">
-                        <h3>Puntuación</h3>
-                        <p>Victoria: 3 puntos | Empate: 1 punto | Derrota: 0 puntos</p>
-                    </div>
-                    <div class="info-card">
-                        <h3>Criterio de Desempate</h3>
-                        <p>1. Puntos | 2. Diferencia de Goles | 3. Goles a Favor</p>
-                    </div>
-                </div>
-            </section>
+                </tbody>
+            </table>
         </div>
 
-        <a href="index.php" class="btn-back">← Volver al inicio</a>
+        <a href="index.php" class="btn">← Volver al inicio</a>
     </main>
 
     <footer class="footer">
         <div class="footer-container">
-            <div class="footer-section about">
+            <div class="footer-section">
                 <h3>Club Bolívar</h3>
                 <p>Institución deportiva referente del país.</p>
             </div>
-            <div class="footer-section links">
+            <div class="footer-section">
                 <h3>Enlaces Rápidos</h3>
                 <ul>
                     <li><a href="index.php">Inicio</a></li>
@@ -122,6 +90,6 @@ $tabla_posiciones = [
         </div>
     </footer>
 
-    <script src="assets/js/index.js"></script>
+    <script src="assets/js/tabla.js"></script>
 </body>
 </html>
