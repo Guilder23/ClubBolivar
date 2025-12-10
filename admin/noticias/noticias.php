@@ -136,8 +136,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $accion === 'editar') {
 }
 
 // ELIMINAR NOTICIA
-if ($accion === 'eliminar' && isset($_GET['id'])) {
-    $id = (int)$_GET['id'];
+if ($accion === 'eliminar' && (isset($_GET['id']) || isset($_POST['id']))) {
+    $id = (int)($_GET['id'] ?? $_POST['id']);
     $consulta = "DELETE FROM noticias WHERE id = $id";
     
     if ($conn && $conn->query($consulta)) {
@@ -238,7 +238,7 @@ $usuario = obtener_usuario_actual();
                                         <td class="acciones">
                                             <button class="btn-action btn-secondary" onclick="abrirModalAdmin('modalVerNoticia', 'ver', <?php echo $noticia['id']; ?>)">👁️ Ver</button>
                                             <button class="btn-action btn-primary" onclick="abrirModalAdmin('modalEditarNoticia', 'editar', <?php echo $noticia['id']; ?>)">✏️ Editar</button>
-                                            <a href="?accion=eliminar&id=<?php echo $noticia['id']; ?>" class="btn-action btn-danger" onclick="return confirmarEliminacion(<?php echo $noticia['id']; ?>, 'noticia')">🗑️ Eliminar</a>
+                                            <button class="btn-action btn-danger" onclick="abrirModalConfirmacion('eliminar_noticia', <?php echo $noticia['id']; ?>, '<?php echo htmlspecialchars($noticia['titulo']); ?>')">🗑️ Eliminar</button>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -259,7 +259,7 @@ $usuario = obtener_usuario_actual();
         <div class="modal-content modal-lg">
             <span class="close-modal" onclick="cerrarModalAdmin('modalCrearNoticia')">&times;</span>
             <h2>Crear Nueva Noticia</h2>
-            <form method="POST" action="noticias.php" class="admin-form" enctype="multipart/form-data">
+            <form id="formCrearNoticia" method="POST" action="noticias.php" class="admin-form" enctype="multipart/form-data" onsubmit="return enviarFormularioAdmin(this, recargarTablaNoticias);">
                 <input type="hidden" name="accion" value="crear">
                 
                 <div class="form-group">
@@ -313,7 +313,70 @@ $usuario = obtener_usuario_actual();
         </div>
     </div>
 
+    <!-- MODAL CONFIRMACIÓN ELIMINACIÓN -->
+    <div id="modalConfirmacion" class="modal">
+        <div class="modal-content modal-confirm">
+            <h2 id="confirmTitulo">Confirmar Eliminación</h2>
+            <p id="confirmMensaje">¿Estás seguro de que deseas eliminar esto?</p>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="cerrarModalAdmin('modalConfirmacion')">Cancelar</button>
+                <button id="btnConfirmarEliminacion" class="btn-danger">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
     <script src="../../assets/js/admin/admin.js"></script>
     <script src="../../assets/js/admin/noticias.js"></script>
+    <script>
+        // ===== FUNCIONES DE CONFIRMACIÓN Y RECARGA =====
+        function abrirModalConfirmacion(tipo, id, titulo) {
+            const modal = document.getElementById('modalConfirmacion');
+            const confirmTitulo = document.getElementById('confirmTitulo');
+            const confirmMensaje = document.getElementById('confirmMensaje');
+            const btnConfirmar = document.getElementById('btnConfirmarEliminacion');
+            
+            confirmTitulo.textContent = 'Confirmar Eliminación';
+            confirmMensaje.textContent = `¿Estás seguro de que deseas eliminar "${titulo}"?`;
+            
+            // Limpiar evento anterior
+            btnConfirmar.onclick = null;
+            
+            // Agregar nuevo evento
+            btnConfirmar.onclick = function() {
+                eliminarNoticia(id);
+            };
+            
+            abrirModalAdmin('modalConfirmacion');
+        }
+
+        function eliminarNoticia(id) {
+            const formData = new FormData();
+            formData.append('accion', 'eliminar');
+            formData.append('id', id);
+
+            fetch('noticias.php', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.exito) {
+                        mostrarAlertaAdmin('success', data.mensaje);
+                        cerrarModalAdmin('modalConfirmacion');
+                        setTimeout(recargarTablaNoticias, 1500);
+                    } else {
+                        mostrarAlertaAdmin('error', data.mensaje);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    mostrarAlertaAdmin('error', 'Error al eliminar la noticia');
+                });
+        }
+
+        function recargarTablaNoticias() {
+            location.reload();
+        }
+    </script>
 </body>
 </html>
