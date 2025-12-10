@@ -135,6 +135,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $accion === 'editar') {
     exit();
 }
 
+// OBTENER TABLA ACTUALIZADA (PARA AJAX)
+if ($accion === 'obtener_tabla') {
+    // OBTENER TODAS LAS NOTICIAS
+    $noticias = [];
+    $resultado = $conn->query("SELECT n.*, u.nombre FROM noticias n JOIN usuarios u ON n.autor_id = u.id ORDER BY n.fecha_creacion DESC");
+
+    if ($resultado) {
+        while ($fila = $resultado->fetch_assoc()) {
+            $noticias[] = $fila;
+        }
+    }
+    
+    // Generar HTML de la tabla
+    ?>
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Autor</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php if (!empty($noticias)): ?>
+            <?php foreach ($noticias as $noticia): ?>
+                <tr>
+                    <td><?php echo htmlspecialchars(substr($noticia['titulo'], 0, 40)); ?></td>
+                    <td><?php echo htmlspecialchars($noticia['nombre']); ?></td>
+                    <td><span class="badge badge-<?php echo $noticia['estado']; ?>"><?php echo ucfirst($noticia['estado']); ?></span></td>
+                    <td><?php echo date('d/m/Y H:i', strtotime($noticia['fecha_creacion'])); ?></td>
+                    <td>
+                        <button class="btn-action btn-primary" onclick="abrirModalAdmin('modalVerNoticia', 'ver', <?php echo $noticia['id']; ?>)">👁️ Ver</button>
+                        <button class="btn-action btn-primary" onclick="abrirModalAdmin('modalEditarNoticia', 'editar', <?php echo $noticia['id']; ?>)">✏️ Editar</button>
+                        <button class="btn-action btn-danger" onclick="abrirModalConfirmacion('eliminar_noticia', <?php echo $noticia['id']; ?>, '<?php echo htmlspecialchars($noticia['titulo']); ?>')">🗑️ Eliminar</button>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <tr>
+                <td colspan="5" class="text-center">No hay noticias registradas</td>
+            </tr>
+        <?php endif; ?>
+    </tbody>
+    <?php
+    exit();
+}
+
 // ELIMINAR NOTICIA
 if ($accion === 'eliminar' && (isset($_GET['id']) || isset($_POST['id']))) {
     $id = (int)($_GET['id'] ?? $_POST['id']);
@@ -259,7 +307,7 @@ $usuario = obtener_usuario_actual();
         <div class="modal-content modal-lg">
             <span class="close-modal" onclick="cerrarModalAdmin('modalCrearNoticia')">&times;</span>
             <h2>Crear Nueva Noticia</h2>
-            <form id="formCrearNoticia" method="POST" action="noticias.php" class="admin-form" enctype="multipart/form-data" onsubmit="return enviarFormularioAdmin(this, recargarTablaNoticias);">
+            <form id="formCrearNoticia" method="POST" action="noticias.php" class="admin-form" enctype="multipart/form-data" onsubmit="event.preventDefault(); enviarFormularioAdmin(this, recargarTablaNoticias);">
                 <input type="hidden" name="accion" value="crear">
                 
                 <div class="form-group">
@@ -375,7 +423,19 @@ $usuario = obtener_usuario_actual();
         }
 
         function recargarTablaNoticias() {
-            location.reload();
+            fetch('?accion=obtener_tabla')
+                .then(response => response.text())
+                .then(html => {
+                    const tabla = document.querySelector('.admin-table');
+                    if (tabla) {
+                        tabla.innerHTML = html;
+                    }
+                    cerrarModalAdmin('modalCrearNoticia');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    mostrarAlertaAdmin('error', 'Error al recargar la tabla');
+                });
         }
     </script>
 </body>
