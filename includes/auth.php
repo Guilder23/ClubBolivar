@@ -16,11 +16,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accion']) && $_POST['
         // Para desarrollo/pruebas mientras se configura la BD
         $usuarios_temp = [
             'admin' => [
+                'id' => 1,
                 'nombre' => 'Administrador',
                 'contrasena' => 'admin123',
                 'rol' => 'admin'
             ],
             'usuario' => [
+                'id' => 2,
                 'nombre' => 'Usuario Normal',
                 'contrasena' => 'usuario123',
                 'rol' => 'usuario'
@@ -30,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accion']) && $_POST['
         // Verificar si el usuario existe y la contraseña es correcta
         if (isset($usuarios_temp[$usuario]) && $usuarios_temp[$usuario]['contrasena'] === $contrasena) {
             // Login exitoso
-            $_SESSION['usuario_id'] = md5($usuario); // ID temporal
+            $_SESSION['usuario_id'] = $usuarios_temp[$usuario]['id']; // ID numérico
             $_SESSION['usuario_nombre'] = $usuarios_temp[$usuario]['nombre'];
             $_SESSION['usuario_usuario'] = $usuario;
             $_SESSION['usuario_rol'] = $usuarios_temp[$usuario]['rol'];

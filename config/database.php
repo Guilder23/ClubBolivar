@@ -83,6 +83,10 @@ function requerir_admin() {
  */
 function escapar($datos) {
     global $conn;
+    if ($conn === null) {
+        // Si no hay conexión BD, usar una función simple de escapado
+        return addslashes(trim($datos));
+    }
     return $conn->real_escape_string($datos);
 }
 

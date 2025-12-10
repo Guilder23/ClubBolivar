@@ -25,10 +25,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $accion === 'crear') {
                      (posicion, equipo, partidos_jugados, partidos_ganados, partidos_empatados, partidos_perdidos, goles_favor, goles_contra, estado) 
                      VALUES ($posicion, '$equipo', $partidos_jugados, $partidos_ganados, $partidos_empatados, $partidos_perdidos, $goles_favor, $goles_contra, 'activo')";
         
-        if ($conn->query($consulta)) {
+        if ($conn && $conn->query($consulta)) {
             $respuesta = ['exito' => true, 'mensaje' => 'Equipo agregado exitosamente'];
         } else {
-            $respuesta = ['exito' => false, 'mensaje' => 'Error: ' . $conn->error];
+            $error_msg = $conn ? $conn->error : 'No hay conexión a la base de datos';
+            $respuesta = ['exito' => false, 'mensaje' => 'Error: ' . $error_msg];
         }
     }
     
@@ -63,10 +64,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $accion === 'editar') {
                      goles_contra = $goles_contra
                      WHERE id = $id";
         
-        if ($conn->query($consulta)) {
+        if ($conn && $conn->query($consulta)) {
             $respuesta = ['exito' => true, 'mensaje' => 'Equipo actualizado exitosamente'];
         } else {
-            $respuesta = ['exito' => false, 'mensaje' => 'Error: ' . $conn->error];
+            $error_msg = $conn ? $conn->error : 'No hay conexión a la base de datos';
+            $respuesta = ['exito' => false, 'mensaje' => 'Error: ' . $error_msg];
         }
     }
     
@@ -78,13 +80,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $accion === 'editar') {
 // OBTENER EQUIPO PARA EDITAR/VER
 if ($accion && in_array($accion, ['editar', 'ver']) && isset($_GET['id'])) {
     $id = (int)$_GET['id'];
-    $resultado = $conn->query("SELECT * FROM tabla_posiciones WHERE id = $id LIMIT 1");
-    
-    if ($resultado && $resultado->num_rows > 0) {
-        $equipo = $resultado->fetch_assoc();
+    if ($conn) {
+        $resultado = $conn->query("SELECT * FROM tabla_posiciones WHERE id = $id LIMIT 1");
         
-        if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
-            include 'Modals/' . $accion . '.php';
+        if ($resultado && $resultado->num_rows > 0) {
+            $equipo = $resultado->fetch_assoc();
+            
+            if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+                include 'Modals/' . $accion . '.php';
+            }
         }
     }
     exit();
@@ -95,10 +99,11 @@ if ($accion === 'eliminar' && isset($_GET['id'])) {
     $id = (int)$_GET['id'];
     $consulta = "DELETE FROM tabla_posiciones WHERE id = $id";
     
-    if ($conn->query($consulta)) {
+    if ($conn && $conn->query($consulta)) {
         $respuesta = ['exito' => true, 'mensaje' => 'Equipo eliminado exitosamente'];
     } else {
-        $respuesta = ['exito' => false, 'mensaje' => 'Error al eliminar: ' . $conn->error];
+        $error_msg = $conn ? $conn->error : 'No hay conexión a la base de datos';
+        $respuesta = ['exito' => false, 'mensaje' => 'Error al eliminar: ' . $error_msg];
     }
     
     header('Content-Type: application/json');
@@ -108,11 +113,13 @@ if ($accion === 'eliminar' && isset($_GET['id'])) {
 
 // OBTENER TODOS LOS EQUIPOS
 $equipos = [];
-$resultado = $conn->query("SELECT * FROM tabla_posiciones WHERE estado = 'activo' ORDER BY posicion ASC");
-
-if ($resultado) {
-    while ($fila = $resultado->fetch_assoc()) {
-        $equipos[] = $fila;
+if ($conn) {
+    $resultado = $conn->query("SELECT * FROM tabla_posiciones WHERE estado = 'activo' ORDER BY posicion ASC");
+    
+    if ($resultado) {
+        while ($fila = $resultado->fetch_assoc()) {
+            $equipos[] = $fila;
+        }
     }
 }
 
@@ -200,7 +207,7 @@ $usuario = obtener_usuario_actual();
                                         <td class="acciones">
                                             <button class="btn-action btn-secondary" onclick="abrirModalAdmin('modalVerEquipo', 'ver', <?php echo $eq['id']; ?>)">👁️ Ver</button>
                                             <button class="btn-action btn-primary" onclick="abrirModalAdmin('modalEditarEquipo', 'editar', <?php echo $eq['id']; ?>)">✏️ Editar</button>
-                                            <a href="?accion=eliminar&id=<?php echo $eq['id']; ?>" class="btn-action btn-danger" onclick="return confirmarEliminacion(<?php echo $eq['id']; ?>, 'equipo')">🗑️ Eliminar</a>
+                                            <a href="?accion=eliminar&id=<?php echo $eq['id']; ?>" class="btn-action btn-danger" onclick="return confirm('¿Está seguro de que desea eliminar este equipo?')">🗑️ Eliminar</a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>

@@ -22,10 +22,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $accion === 'crear') {
         $consulta = "INSERT INTO noticias (titulo, contenido, autor_id, estado, fecha_publicacion) 
                      VALUES ('$titulo', '$contenido', $usuario_id, '$estado', " . ($fecha_publicacion ? "'$fecha_publicacion'" : "NULL") . ")";
         
-        if ($conn->query($consulta)) {
+        if ($conn && $conn->query($consulta)) {
             $respuesta = ['exito' => true, 'mensaje' => 'Noticia creada exitosamente'];
         } else {
-            $respuesta = ['exito' => false, 'mensaje' => 'Error al crear la noticia: ' . $conn->error];
+            $error_msg = $conn ? $conn->error : 'No hay conexión a la base de datos';
+            $respuesta = ['exito' => false, 'mensaje' => 'Error al crear la noticia: ' . $error_msg];
         }
     }
     
@@ -69,10 +70,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $accion === 'editar') {
                      fecha_publicacion = " . ($fecha_publicacion ? "'$fecha_publicacion'" : "NULL") . "
                      WHERE id = $id";
         
-        if ($conn->query($consulta)) {
+        if ($conn && $conn->query($consulta)) {
             $respuesta = ['exito' => true, 'mensaje' => 'Noticia actualizada exitosamente'];
         } else {
-            $respuesta = ['exito' => false, 'mensaje' => 'Error al actualizar: ' . $conn->error];
+            $error_msg = $conn ? $conn->error : 'No hay conexión a la base de datos';
+            $respuesta = ['exito' => false, 'mensaje' => 'Error al actualizar: ' . $error_msg];
         }
     }
     
@@ -86,10 +88,11 @@ if ($accion === 'eliminar' && isset($_GET['id'])) {
     $id = (int)$_GET['id'];
     $consulta = "DELETE FROM noticias WHERE id = $id";
     
-    if ($conn->query($consulta)) {
+    if ($conn && $conn->query($consulta)) {
         $respuesta = ['exito' => true, 'mensaje' => 'Noticia eliminada exitosamente'];
     } else {
-        $respuesta = ['exito' => false, 'mensaje' => 'Error al eliminar: ' . $conn->error];
+        $error_msg = $conn ? $conn->error : 'No hay conexión a la base de datos';
+        $respuesta = ['exito' => false, 'mensaje' => 'Error al eliminar: ' . $error_msg];
     }
     
     header('Content-Type: application/json');
@@ -204,7 +207,7 @@ $usuario = obtener_usuario_actual();
         <div class="modal-content modal-lg">
             <span class="close-modal" onclick="cerrarModalAdmin('modalCrearNoticia')">&times;</span>
             <h2>Crear Nueva Noticia</h2>
-            <form method="POST" action="?" class="admin-form" onsubmit="event.preventDefault(); enviarFormularioAdmin(this, () => location.reload())">
+            <form method="POST" action="noticias.php" class="admin-form">
                 <input type="hidden" name="accion" value="crear">
                 
                 <div class="form-group">
