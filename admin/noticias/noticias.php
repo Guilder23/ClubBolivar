@@ -4,6 +4,47 @@ require_once '../../includes/auth.php';
 
 requerir_admin();
 
+// ===== FUNCIONES DE UTILIDAD =====
+function procesar_imagen_noticia($file) {
+    $carpeta_uploads = '../../assets/img/noticias/';
+    
+    // Crear carpeta si no existe
+    if (!is_dir($carpeta_uploads)) {
+        mkdir($carpeta_uploads, 0755, true);
+    }
+    
+    if ($file['error'] === UPLOAD_ERR_NO_FILE) {
+        return null; // Sin imagen es válido
+    }
+    
+    if ($file['error'] !== UPLOAD_ERR_OK) {
+        throw new Exception('Error al subir la imagen');
+    }
+    
+    // Validar tipo de archivo
+    $tipos_permitidos = ['image/jpeg', 'image/png', 'image/gif'];
+    if (!in_array($file['type'], $tipos_permitidos)) {
+        throw new Exception('Tipo de archivo no permitido. Solo JPG, PNG y GIF');
+    }
+    
+    // Validar tamaño (5MB máximo)
+    if ($file['size'] > 5 * 1024 * 1024) {
+        throw new Exception('El archivo es muy grande. Máximo 5MB');
+    }
+    
+    // Generar nombre único
+    $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+    $nombre_archivo = 'noticia_' . time() . '_' . rand(1000, 9999) . '.' . $ext;
+    $ruta_completa = $carpeta_uploads . $nombre_archivo;
+    
+    // Mover archivo
+    if (!move_uploaded_file($file['tmp_name'], $ruta_completa)) {
+        throw new Exception('Error al guardar la imagen');
+    }
+    
+    return $nombre_archivo;
+}
+
 // Procesar acciones
 $accion = $_GET['accion'] ?? $_POST['accion'] ?? null;
 
@@ -17,16 +58,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $accion === 'crear') {
     if (empty($titulo) || empty($contenido)) {
         $respuesta = ['exito' => false, 'mensaje' => 'Todos los campos son requeridos'];
     } else {
-        $fecha_publicacion = ($estado === 'publicado') ? date('Y-m-d H:i:s') : NULL;
-        
-        $consulta = "INSERT INTO noticias (titulo, contenido, autor_id, estado, fecha_publicacion) 
-                     VALUES ('$titulo', '$contenido', $usuario_id, '$estado', " . ($fecha_publicacion ? "'$fecha_publicacion'" : "NULL") . ")";
-        
-        if ($conn && $conn->query($consulta)) {
-            $respuesta = ['exito' => true, 'mensaje' => 'Noticia creada exitosamente'];
-        } else {
-            $error_msg = $conn ? $conn->error : 'No hay conexión a la base de datos';
-            $respuesta = ['exito' => false, 'mensaje' => 'Error al crear la noticia: ' . $error_msg];
+        try {
+            // Procesar imagen
+            $imagen = null;
+            if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] !== UPLOAD_ERR_NO_FILE) {
+                $imagen = procesar_imagen_noticia($_FILES['imagen']);
+            }
+            
+            $imagen_valor = $imagen ? "'$imagen'" : 'NULL';
+            $fecha_publicacion = ($estado === 'publicado') ? date('Y-m-d H:i:s') : NULL;
+            
+            $consulta = "INSERT INTO noticias (titulo, contenido, autor_id, imagen, estado, fecha_publicacion) 
+                         VALUES ('$titulo', '$contenido', $usuario_id, $imagen_valor, '$estado', " . ($fecha_publicacion ? "'$fecha_publicacion'" : "NULL") . ")";
+            
+            if ($conn && $conn->query($consulta)) {
+                $respuesta = ['exito' => true, 'mensaje' => 'Noticia creada exitosamente'];
+            } else {
+                $error_msg = $conn ? $conn->error : 'No hay conexión a la base de datos';
+                $respuesta = ['exito' => false, 'mensaje' => 'Error al crear la noticia: ' . $error_msg];
+            }
+        } catch (Exception $e) {
+            $respuesta = ['exito' => false, 'mensaje' => 'Error: ' . $e->getMessage()];
         }
     }
     
@@ -207,7 +259,7 @@ $usuario = obtener_usuario_actual();
         <div class="modal-content modal-lg">
             <span class="close-modal" onclick="cerrarModalAdmin('modalCrearNoticia')">&times;</span>
             <h2>Crear Nueva Noticia</h2>
-            <form method="POST" action="noticias.php" class="admin-form">
+            <form method="POST" action="noticias.php" class="admin-form" enctype="multipart/form-data">
                 <input type="hidden" name="accion" value="crear">
                 
                 <div class="form-group">
@@ -218,6 +270,12 @@ $usuario = obtener_usuario_actual();
                 <div class="form-group">
                     <label for="contenido">Contenido:</label>
                     <textarea id="contenido" name="contenido" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="imagen">Imagen:</label>
+                    <input type="file" id="imagen" name="imagen" accept="image/*">
+                    <small>Formatos aceptados: JPG, PNG, GIF. Tamaño máximo: 5MB</small>
                 </div>
 
                 <div class="form-group">

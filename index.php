@@ -26,8 +26,8 @@ $tabla_posiciones = [
         <aside class="sidebar" id="mision">
             <span class="sidebar-title">MISIÓN Y VISIÓN</span>
             <p class="sidebar-desc">Hace poco más de un año y medio lanzábamos públicamente, un primer esbozo del propósito que nos anima a apoyar desde donde estemos a la institución deportiva más grande del país, porque nacimos cobijados por esa frazada celeste de triunfos y glorias.
-Algunos oficiosos corrieron hasta las puertas del presidente de la entidad para tergiversar nuestras propuestas, creyendo que estábamos tras sus puestos de funcionarios; nada más falaz, porque somos profesionales que tenemos nuestra ocupación diaria. A raíz de esto recibimos una respuesta poco educada, menospreciando nuestro noble afán. No respondimos porque somos enemigos de las polémicas en casa.
-¿Qué decíamos entonces?</p>
+            Algunos oficiosos corrieron hasta las puertas del presidente de la entidad para tergiversar nuestras propuestas, creyendo que estábamos tras sus puestos de funcionarios; nada más falaz, porque somos profesionales que tenemos nuestra ocupación diaria. A raíz de esto recibimos una respuesta poco educada, menospreciando nuestro noble afán. No respondimos porque somos enemigos de las polémicas en casa.
+            ¿Qué decíamos entonces?</p>
             <a href="mision.php" class="card-btn">Ver más</a>
         </aside>
 
