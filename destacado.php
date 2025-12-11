@@ -1,6 +1,42 @@
 <?php
 // Incluir configuración
 require_once __DIR__ . '/config/database.php';
+
+// Obtener todas las noticias publicadas ordenadas por fecha descendente
+$noticias = [];
+if ($conn) {
+    $resultado = $conn->query("SELECT n.*, u.nombre as autor FROM noticias n 
+                               LEFT JOIN usuarios u ON n.autor_id = u.id 
+                               WHERE n.estado = 'publicado' 
+                               ORDER BY n.fecha_actualizacion DESC");
+    if ($resultado) {
+        while ($fila = $resultado->fetch_assoc()) {
+            $noticias[] = $fila;
+        }
+    }
+}
+
+// Datos de fallback si no hay conexión
+if (empty($noticias)) {
+    $noticias = [
+        [
+            'id' => 1,
+            'titulo' => 'Victoria Contando los Minutos',
+            'contenido' => 'Fueron 10 minutos largos, porque Independiente buscaba el empate y nuestro equipo parecía estar con las piernas gastadas. El final se hizo esperar y festejamos otro triunfo de visitante, esta vez en la Capital. Una victoria que vale por dos, que nos acerca más al objetivo de la temporada. La defensa se mantuvo sólida ante el asedio rival, mientras que nuestro mediocampo controló los tiempos del juego de manera inteligente. Los delanteros, aunque tuvieron pocas oportunidades, las aprovecharon con eficiencia cuando fue necesario.',
+            'imagen' => null,
+            'fecha_actualizacion' => '2025-12-09',
+            'autor' => 'Administrador'
+        ],
+        [
+            'id' => 2,
+            'titulo' => 'Preparación para el Próximo Partido',
+            'contenido' => 'El equipo continúa su preparación de cara al próximo enfrentamiento. Los entrenamientos han sido intensivos y el cuerpo técnico ha estado enfocado en mejorar aspectos defensivos y ofensivos que resultaron vulnerables en el último encuentro. La dirigencia confirmó que todos los jugadores se encuentran en óptimas condiciones físicas y mentales para afrontar los desafíos que vienen. Se espera un partido emocionante donde Club Bolívar buscará mantener su racha ganadora.',
+            'imagen' => null,
+            'fecha_actualizacion' => '2025-12-08',
+            'autor' => 'Administrador'
+        ]
+    ];
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -27,25 +63,32 @@ require_once __DIR__ . '/config/database.php';
                     <div class="header-line"></div>
                 </div>
                 
-                <article class="featured-card">
-                    <img src="assets/img/gol.jpg" alt="Gol">
-                    <div class="featured-card-content">
-                        <h3>Victoria Contando los Minutos</h3>
-                        <p class="author">Publicado el 9 de diciembre 2025</p>
-                        <p>Fueron 10 minutos largos, porque Independiente buscaba el empate y nuestro equipo parecía estar con las piernas gastadas. El final se hizo esperar y festejamos otro triunfo de visitante, esta vez en la Capital. Una victoria que vale por dos, que nos acerca más al objetivo de la temporada.</p>
-                        <p>La defensa se mantuvo sólida ante el asedio rival, mientras que nuestro mediocampo controló los tiempos del juego de manera inteligente. Los delanteros, aunque tuvieron pocas oportunidades, las aprovecharon con eficiencia cuando fue necesario.</p>
-                    </div>
-                </article>
-
-                <article class="featured-card">
-                    <img src="assets/img/stadio.jpg" alt="Estadio">
-                    <div class="featured-card-content">
-                        <h3>Preparación para el Próximo Partido</h3>
-                        <p class="author">Publicado el 8 de diciembre 2025</p>
-                        <p>El equipo continúa su preparación de cara al próximo enfrentamiento. Los entrenamientos han sido intensivos y el cuerpo técnico ha estado enfocado en mejorar aspectos defensivos y ofensivos que resultaron vulnerables en el último encuentro.</p>
-                        <p>La dirigencia confirmó que todos los jugadores se encuentran en óptimas condiciones físicas y mentales para afrontar los desafíos que vienen. Se espera un partido emocionante donde Club Bolívar buscará mantener su racha ganadora.</p>
-                    </div>
-                </article>
+                <?php if (!empty($noticias)): ?>
+                    <?php foreach ($noticias as $noticia): ?>
+                        <article class="featured-card">
+                            <?php 
+                            if (!empty($noticia['imagen'])) {
+                                $imagen_url = 'assets/img/noticias/' . htmlspecialchars($noticia['imagen']);
+                                echo '<img src="' . $imagen_url . '" alt="' . htmlspecialchars($noticia['titulo']) . '">';
+                            } else {
+                                echo '<img src="assets/img/gol.jpg" alt="Noticias">';
+                            }
+                            ?>
+                            <div class="featured-card-content">
+                                <h3><?php echo htmlspecialchars($noticia['titulo']); ?></h3>
+                                <p class="author">Publicado el <?php 
+                                    $fecha = strtotime($noticia['fecha_actualizacion']);
+                                    $meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+                                    $mes = $meses[date('n', $fecha) - 1];
+                                    echo date('d', $fecha) . ' de ' . $mes . ' de ' . date('Y', $fecha);
+                                ?> por <?php echo htmlspecialchars($noticia['autor']); ?></p>
+                                <p><?php echo htmlspecialchars($noticia['contenido']); ?></p>
+                            </div>
+                        </article>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p style="text-align: center; color: #999; padding: 2rem;">No hay noticias publicadas en este momento.</p>
+                <?php endif; ?>
             </section>
         </div>
 
