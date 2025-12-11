@@ -379,25 +379,95 @@ body {
     margin-bottom: 0.5rem;
 }
 
-/* ===== NO CONTENT ===== */
-.no-content {
-    text-align: center;
-    padding: 2rem;
-    color: #5a7bb7;
+/* ===== BOTONES ===== */
+.btn, .btn-back {
+    background: linear-gradient(135deg, #1e3a5f, #5a7bb7);
+    color: #fff;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    display: inline-block;
+    margin-top: 2rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(30, 58, 95, 0.2);
+    letter-spacing: 0.5px;
+}
+
+.btn:hover, .btn-back:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(30, 58, 95, 0.3);
+    background: linear-gradient(135deg, #5a7bb7, #1e3a5f);
+}
+
+.btn:active, .btn-back:active {
+    transform: translateY(-1px);
 }
 
 /* ===== FOOTER ===== */
 .footer {
     background: linear-gradient(90deg, #1e3a5f, #5a7bb7);
     color: #fff;
-    text-align: center;
-    padding: 2rem;
-    margin-top: 3rem;
+    padding: 3rem 2rem 1rem;
+    margin-top: 4rem;
+    border-top: 3px solid #b3d1f7;
 }
 
-.footer-content {
+.footer-container {
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 0 auto 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 3rem;
+}
+
+.footer-section {
+    text-align: left;
+}
+
+.footer-section h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #b3d1f7;
+}
+
+.footer-section p {
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.8;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 0.8rem;
+}
+
+.footer-section ul li a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+    color: #b3d1f7;
+    transform: translateX(4px);
+    display: inline-block;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95rem;
 }
 
 /* ===== RESPONSIVE ===== */

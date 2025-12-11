@@ -99,18 +99,27 @@ if (empty($noticias)) {
         <div class="footer-container">
             <div class="footer-section about">
                 <h3>Club Bolívar</h3>
-                <p>Institución deportiva referente del país.</p>
+                <p>Institución deportiva referente del país con una historia rica en éxitos y tradición.</p>
             </div>
             <div class="footer-section links">
                 <h3>Enlaces Rápidos</h3>
                 <ul>
                     <li><a href="index.php">Inicio</a></li>
                     <li><a href="tabla.php">Tabla de Posiciones</a></li>
+                    <li><a href="destacado.php">Lo Destacado</a></li>
+                    <li><a href="opinion.php">Opinión</a></li>
+                </ul>
+            </div>
+            <div class="footer-section admin">
+                <h3>Administración</h3>
+                <ul>
+                    <li><a href="admin/">Panel de Admin</a></li>
+                    <li><a href="config/logout.php">Cerrar Sesión</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            © 2025 - Todos los derechos reservados Bolivar
+            © 2025 - Club Bolívar - Todos los derechos reservados
         </div>
     </footer>
 

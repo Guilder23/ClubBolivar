@@ -6,7 +6,7 @@ require_once __DIR__ . '/config/database.php';
 $tabla_posiciones = [];
 
 if ($conn) {
-    $query = "SELECT * FROM tabla_posiciones WHERE estado = 'publicado' ORDER BY posicion ASC";
+    $query = "SELECT * FROM tabla_posiciones WHERE estado = 'publicado' ORDER BY puntos DESC, diferencia_goles DESC";
     $result = mysqli_query($conn, $query);
     
     if ($result) {
@@ -60,10 +60,11 @@ if ($conn) {
                 </thead>
                 <tbody>
                     <?php 
+                    $posicion = 1;
                     foreach($tabla_posiciones as $equipo): 
                     ?>
                     <tr>
-                        <td><span class="position-badge"><?php echo $equipo['posicion']; ?></span></td>
+                        <td><span class="position-badge"><?php echo $posicion; ?></span></td>
                         <td><strong><?php echo $equipo['equipo']; ?></strong></td>
                         <td><?php echo $equipo['partidos_jugados']; ?></td>
                         <td><?php echo $equipo['partidos_ganados']; ?></td>
@@ -80,6 +81,7 @@ if ($conn) {
                         </td>
                     </tr>
                     <?php 
+                        $posicion++;
                         endforeach; 
                         ?>
                 </tbody>
@@ -91,20 +93,29 @@ if ($conn) {
 
     <footer class="footer">
         <div class="footer-container">
-            <div class="footer-section">
+            <div class="footer-section about">
                 <h3>Club Bolívar</h3>
-                <p>Institución deportiva referente del país.</p>
+                <p>Institución deportiva referente del país con una historia rica en éxitos y tradición.</p>
             </div>
-            <div class="footer-section">
+            <div class="footer-section links">
                 <h3>Enlaces Rápidos</h3>
                 <ul>
                     <li><a href="index.php">Inicio</a></li>
-                    <li><a href="mision.php">Misión</a></li>
+                    <li><a href="tabla.php">Tabla de Posiciones</a></li>
+                    <li><a href="destacado.php">Lo Destacado</a></li>
+                    <li><a href="opinion.php">Opinión</a></li>
+                </ul>
+            </div>
+            <div class="footer-section admin">
+                <h3>Administración</h3>
+                <ul>
+                    <li><a href="admin/">Panel de Admin</a></li>
+                    <li><a href="config/logout.php">Cerrar Sesión</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            © 2025 - Todos los derechos reservados Bolivar
+            © 2025 - Club Bolívar - Todos los derechos reservados
         </div>
     </footer>
 
