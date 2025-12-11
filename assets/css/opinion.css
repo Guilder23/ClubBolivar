@@ -228,3 +228,142 @@ body {
         font-size: 0.95rem;
     }
 }
+
+/* ===== SECCIÓN DE COMENTARIOS ===== */
+.comentarios-section {
+    background: #fff;
+    border-radius: 15px;
+    padding: 2.5rem;
+    margin-top: 3rem;
+    box-shadow: var(--shadow-md);
+}
+
+.comentarios-section h2 {
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 1rem;
+}
+
+.comentarios-section h3 {
+    color: var(--primary-color);
+    font-size: 1.3rem;
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+/* ===== FORMULARIO DE COMENTARIOS ===== */
+.comentario-form {
+    background: var(--light-bg);
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 2.5rem;
+    border: 1px solid var(--border-color);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #fff;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(90, 123, 183, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.btn-enviar {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: #fff;
+    padding: 0.9rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-md);
+}
+
+.btn-enviar:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+}
+
+.btn-enviar:active {
+    transform: translateY(0);
+}
+
+/* ===== COMENTARIOS PUBLICADOS ===== */
+.comentarios-lista {
+    margin-top: 2rem;
+}
+
+.comentario-item {
+    background: var(--light-bg);
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid var(--secondary-color);
+    transition: all 0.3s ease;
+}
+
+.comentario-item:hover {
+    transform: translateX(4px);
+    box-shadow: var(--shadow-md);
+}
+
+.comentario-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.8rem;
+}
+
+.comentario-header strong {
+    color: var(--primary-color);
+    font-size: 1.1rem;
+}
+
+.comentario-fecha {
+    color: var(--text-light);
+    font-size: 0.85rem;
+}
+
+.comentario-texto {
+    color: var(--text-color);
+    line-height: 1.7;
+    margin: 0;
+}
+
+.mensaje-alerta {
+    border-radius: 8px;
+    border-left: 4px solid;
+    border-left-color: inherit;
+}

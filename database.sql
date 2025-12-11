@@ -46,6 +46,15 @@ CREATE TABLE IF NOT EXISTS tabla_posiciones (
   INDEX idx_estado (estado)
 );
 
+-- ===== TABLA DE COMENTARIOS =====
+CREATE TABLE IF NOT EXISTS comentarios (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(100) NOT NULL,
+  comentario LONGTEXT NOT NULL,
+  fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_fecha (fecha_creacion)
+);
+
 -- ===== INSERTAR USUARIO ADMINISTRADOR POR DEFECTO =====
 -- Usuario: admin
 -- Contraseña: admin123

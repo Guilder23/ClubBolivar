@@ -1,6 +1,37 @@
 <?php
 // Incluir configuración
 require_once __DIR__ . '/config/database.php';
+
+// Procesar envío de comentario
+$mensaje = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nombre']) && isset($_POST['comentario'])) {
+    $nombre = escapar($_POST['nombre'] ?? '');
+    $comentario = escapar($_POST['comentario'] ?? '');
+    
+    if (!empty($nombre) && !empty($comentario)) {
+        if ($conn) {
+            $consulta = "INSERT INTO comentarios (nombre, comentario) VALUES ('$nombre', '$comentario')";
+            if ($conn->query($consulta)) {
+                $mensaje = 'Comentario publicado exitosamente';
+            } else {
+                $mensaje = 'Error al publicar el comentario';
+            }
+        }
+    } else {
+        $mensaje = 'Por favor completa todos los campos';
+    }
+}
+
+// Obtener comentarios
+$comentarios = [];
+if ($conn) {
+    $resultado = $conn->query("SELECT nombre, comentario, fecha_creacion FROM comentarios ORDER BY fecha_creacion DESC");
+    if ($resultado) {
+        while ($fila = $resultado->fetch_assoc()) {
+            $comentarios[] = $fila;
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -41,7 +72,51 @@ require_once __DIR__ . '/config/database.php';
 
                 <p>Ahora toca seguir trabajando, mantener la concentración y prepararse para lo que viene. El camino aún es largo, pero con este tipo de actuaciones, sabemos que estamos en el rumbo correcto.</p>
             </article>
-        </div>
+
+            <!-- SECCIÓN DE COMENTARIOS -->
+            <section class="comentarios-section">
+                <h2>Deja tu Opinión</h2>
+                
+                <?php if (!empty($mensaje)): ?>
+                    <div class="mensaje-alerta" style="background: <?php echo strpos($mensaje, 'Error') === false ? '#d4edda' : '#f8d7da'; ?>; color: <?php echo strpos($mensaje, 'Error') === false ? '#155724' : '#721c24'; ?>; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <?php echo htmlspecialchars($mensaje); ?>
+                    </div>
+                <?php endif; ?>
+
+                <!-- FORMULARIO -->
+                <form method="POST" class="comentario-form">
+                    <div class="form-group">
+                        <label for="nombre">Tu Nombre:</label>
+                        <input type="text" id="nombre" name="nombre" placeholder="Ingresa tu nombre" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="comentario">Tu Comentario:</label>
+                        <textarea id="comentario" name="comentario" rows="5" placeholder="Comparte tu opinión sobre el artículo..." required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn-enviar">📝 Enviar Comentario</button>
+                </form>
+
+                <!-- COMENTARIOS PUBLICADOS -->
+                <div class="comentarios-lista">
+                    <h3>Comentarios (<?php echo count($comentarios); ?>)</h3>
+                    
+                    <?php if (!empty($comentarios)): ?>
+                        <?php foreach ($comentarios as $com): ?>
+                            <div class="comentario-item">
+                                <div class="comentario-header">
+                                    <strong><?php echo htmlspecialchars($com['nombre']); ?></strong>
+                                    <span class="comentario-fecha"><?php echo date('d/m/Y H:i', strtotime($com['fecha_creacion'])); ?></span>
+                                </div>
+                                <p class="comentario-texto"><?php echo nl2br(htmlspecialchars($com['comentario'])); ?></p>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p style="color: #999; text-align: center; padding: 2rem;">No hay comentarios aún. ¡Sé el primero en comentar!</p>
+                    <?php endif; ?>
+                </div>
+            </section>
 
         <a href="index.php" class="btn-back">← Volver al inicio</a>
     </main>
