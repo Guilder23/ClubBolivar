@@ -12,14 +12,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nombre']) && isset($_
         if ($conn) {
             $consulta = "INSERT INTO comentarios (nombre, comentario) VALUES ('$nombre', '$comentario')";
             if ($conn->query($consulta)) {
-                $mensaje = 'Comentario publicado exitosamente';
+                // Guardar mensaje en sesión
+                $_SESSION['mensaje_comentario'] = 'Comentario publicado exitosamente';
+                $_SESSION['tipo_mensaje'] = 'success';
+                // Redirigir para evitar duplicados al recargar
+                header("Location: opinion.php");
+                exit();
             } else {
-                $mensaje = 'Error al publicar el comentario';
+                $_SESSION['mensaje_comentario'] = 'Error al publicar el comentario';
+                $_SESSION['tipo_mensaje'] = 'error';
             }
         }
     } else {
-        $mensaje = 'Por favor completa todos los campos';
+        $_SESSION['mensaje_comentario'] = 'Por favor completa todos los campos';
+        $_SESSION['tipo_mensaje'] = 'error';
     }
+}
+
+// Recuperar mensaje de sesión si existe
+if (isset($_SESSION['mensaje_comentario'])) {
+    $mensaje = $_SESSION['mensaje_comentario'];
+    $tipo_mensaje = $_SESSION['tipo_mensaje'];
+    // Eliminar el mensaje de la sesión después de mostrarlo una vez
+    unset($_SESSION['mensaje_comentario']);
+    unset($_SESSION['tipo_mensaje']);
 }
 
 // Obtener comentarios
@@ -75,29 +91,8 @@ if ($conn) {
 
             <!-- SECCIÓN DE COMENTARIOS -->
             <section class="comentarios-section">
-                <h2>Deja tu Opinión</h2>
+                <h2>Opiniones de Nuestros Seguidores</h2>
                 
-                <?php if (!empty($mensaje)): ?>
-                    <div class="mensaje-alerta" style="background: <?php echo strpos($mensaje, 'Error') === false ? '#d4edda' : '#f8d7da'; ?>; color: <?php echo strpos($mensaje, 'Error') === false ? '#155724' : '#721c24'; ?>; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                        <?php echo htmlspecialchars($mensaje); ?>
-                    </div>
-                <?php endif; ?>
-
-                <!-- FORMULARIO -->
-                <form method="POST" class="comentario-form">
-                    <div class="form-group">
-                        <label for="nombre">Tu Nombre:</label>
-                        <input type="text" id="nombre" name="nombre" placeholder="Ingresa tu nombre" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="comentario">Tu Comentario:</label>
-                        <textarea id="comentario" name="comentario" rows="5" placeholder="Comparte tu opinión sobre el artículo..." required></textarea>
-                    </div>
-                    
-                    <button type="submit" class="btn-enviar">📝 Enviar Comentario</button>
-                </form>
-
                 <!-- COMENTARIOS PUBLICADOS -->
                 <div class="comentarios-lista">
                     <h3>Comentarios (<?php echo count($comentarios); ?>)</h3>
@@ -116,6 +111,44 @@ if ($conn) {
                         <p style="color: #999; text-align: center; padding: 2rem;">No hay comentarios aún. ¡Sé el primero en comentar!</p>
                     <?php endif; ?>
                 </div>
+
+                <hr style="margin: 2.5rem 0; border: none; border-top: 1px solid #e2e8f0;">
+
+                <!-- FORMULARIO -->
+                <h2 style="margin-top: 2.5rem;">Deja tu Opinión</h2>
+                
+                <?php if (!empty($mensaje)): ?>
+                    <div class="mensaje-alerta" id="mensajeAlerta" style="background: <?php echo ($tipo_mensaje === 'success') ? '#d4edda' : '#f8d7da'; ?>; color: <?php echo ($tipo_mensaje === 'success') ? '#155724' : '#721c24'; ?>; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <?php echo htmlspecialchars($mensaje); ?>
+                    </div>
+                    <script>
+                        // Ocultar el mensaje después de 3 segundos
+                        setTimeout(function() {
+                            var alerta = document.getElementById('mensajeAlerta');
+                            if (alerta) {
+                                alerta.style.transition = 'opacity 0.5s ease';
+                                alerta.style.opacity = '0';
+                                setTimeout(function() {
+                                    alerta.style.display = 'none';
+                                }, 500);
+                            }
+                        }, 3000);
+                    </script>
+                <?php endif; ?>
+
+                <form method="POST" class="comentario-form">
+                    <div class="form-group">
+                        <label for="nombre">Tu Nombre:</label>
+                        <input type="text" id="nombre" name="nombre" placeholder="Ingresa tu nombre" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="comentario">Tu Comentario:</label>
+                        <textarea id="comentario" name="comentario" rows="5" placeholder="Comparte tu opinión sobre el artículo..." required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn-enviar">📝 Enviar Comentario</button>
+                </form>
             </section>
 
         <a href="index.php" class="btn-back">← Volver al inicio</a>
