@@ -7,22 +7,121 @@ requerir_admin();
 
 $usuario = obtener_usuario_actual();
 
-// Datos de ejemplo (sin BD)
+// Obtener estadísticas de la base de datos
 $estadisticas = [
-    'noticias' => 1,
-    'noticias_publicadas' => 1,
-    'equipos' => 5,
-    'lider' => 'Club Bolívar'
+    'noticias_total' => 0,
+    'noticias_publicadas' => 0,
+    'noticias_borrador' => 0,
+    'noticias_canceladas' => 0,
+    'equipos_total' => 0,
+    'equipos_publicados' => 0,
+    'equipos_borrador' => 0,
+    'equipos_cancelados' => 0,
+    'lider' => 'N/A'
 ];
 
-$noticias_recientes = [
-    [
-        'titulo' => 'Bienvenido a Club Bolívar',
-        'autor' => 'Administrador',
-        'estado' => 'Publicado',
-        'fecha' => '09/12/2025 18:27'
-    ]
-];
+$noticias_recientes = [];
+
+if ($conn) {
+    // Contar noticias por estado
+    $resultado = $conn->query("SELECT COUNT(*) as total FROM noticias");
+    if ($resultado) {
+        $row = $resultado->fetch_assoc();
+        $estadisticas['noticias_total'] = $row['total'];
+    }
+    
+    $resultado = $conn->query("SELECT COUNT(*) as total FROM noticias WHERE estado = 'publicado'");
+    if ($resultado) {
+        $row = $resultado->fetch_assoc();
+        $estadisticas['noticias_publicadas'] = $row['total'];
+    }
+    
+    $resultado = $conn->query("SELECT COUNT(*) as total FROM noticias WHERE estado = 'borrador'");
+    if ($resultado) {
+        $row = $resultado->fetch_assoc();
+        $estadisticas['noticias_borrador'] = $row['total'];
+    }
+    
+    $resultado = $conn->query("SELECT COUNT(*) as total FROM noticias WHERE estado = 'cancelado'");
+    if ($resultado) {
+        $row = $resultado->fetch_assoc();
+        $estadisticas['noticias_canceladas'] = $row['total'];
+    }
+    
+    // Contar equipos por estado
+    $resultado = $conn->query("SELECT COUNT(*) as total FROM tabla_posiciones");
+    if ($resultado) {
+        $row = $resultado->fetch_assoc();
+        $estadisticas['equipos_total'] = $row['total'];
+    }
+    
+    $resultado = $conn->query("SELECT COUNT(*) as total FROM tabla_posiciones WHERE estado = 'publicado'");
+    if ($resultado) {
+        $row = $resultado->fetch_assoc();
+        $estadisticas['equipos_publicados'] = $row['total'];
+    }
+    
+    $resultado = $conn->query("SELECT COUNT(*) as total FROM tabla_posiciones WHERE estado = 'borrador'");
+    if ($resultado) {
+        $row = $resultado->fetch_assoc();
+        $estadisticas['equipos_borrador'] = $row['total'];
+    }
+    
+    $resultado = $conn->query("SELECT COUNT(*) as total FROM tabla_posiciones WHERE estado = 'cancelado'");
+    if ($resultado) {
+        $row = $resultado->fetch_assoc();
+        $estadisticas['equipos_cancelados'] = $row['total'];
+    }
+    
+    // Obtener líder (equipo en posición 1)
+    $resultado = $conn->query("SELECT equipo FROM tabla_posiciones WHERE posicion = 1 LIMIT 1");
+    if ($resultado && $resultado->num_rows > 0) {
+        $row = $resultado->fetch_assoc();
+        $estadisticas['lider'] = $row['equipo'];
+    }
+    
+    // Obtener últimas 5 noticias
+    $resultado = $conn->query("SELECT titulo, usuario_id, estado, fecha_actualizacion FROM noticias ORDER BY fecha_actualizacion DESC LIMIT 5");
+    if ($resultado) {
+        while ($fila = $resultado->fetch_assoc()) {
+            // Obtener nombre del autor
+            $res_autor = $conn->query("SELECT nombre FROM usuarios WHERE id = " . (int)$fila['usuario_id']);
+            $autor = 'Desconocido';
+            if ($res_autor && $res_autor->num_rows > 0) {
+                $row_autor = $res_autor->fetch_assoc();
+                $autor = $row_autor['nombre'];
+            }
+            
+            $noticias_recientes[] = [
+                'titulo' => $fila['titulo'],
+                'autor' => $autor,
+                'estado' => ucfirst($fila['estado']),
+                'fecha' => date('d/m/Y H:i', strtotime($fila['fecha_actualizacion']))
+            ];
+        }
+    }
+} else {
+    // Datos de ejemplo si no hay BD
+    $estadisticas = [
+        'noticias_total' => 1,
+        'noticias_publicadas' => 1,
+        'noticias_borrador' => 0,
+        'noticias_canceladas' => 0,
+        'equipos_total' => 5,
+        'equipos_publicados' => 5,
+        'equipos_borrador' => 0,
+        'equipos_cancelados' => 0,
+        'lider' => 'Club Bolívar'
+    ];
+    $noticias_recientes = [
+        [
+            'titulo' => 'Bienvenido a Club Bolívar',
+            'autor' => 'Administrador',
+            'estado' => 'Publicado',
+            'fecha' => '09/12/2025 18:27'
+        ]
+    ];
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -65,41 +164,38 @@ $noticias_recientes = [
             <!-- CONTENIDO -->
             <div class="admin-body">
                 <div class="dashboard-grid">
-                    <!-- TARJETA: NOTICIAS -->
+                    <!-- TARJETA: NOTICIAS TOTAL -->
                     <div class="dashboard-card">
                         <div class="card-header">
                             <h3>Noticias</h3>
                             <span class="card-icon">📰</span>
                         </div>
                         <div class="card-body">
-                            <p class="card-number"><?php echo $estadisticas['noticias']; ?></p>
+                            <p class="card-number"><?php echo $estadisticas['noticias_total']; ?></p>
                             <p class="card-label">Noticias registradas</p>
+                            <div class="card-stats">
+                                <span class="stat-item">📌 Publicadas: <?php echo $estadisticas['noticias_publicadas']; ?></span>
+                                <span class="stat-item">📝 Borrador: <?php echo $estadisticas['noticias_borrador']; ?></span>
+                                <span class="stat-item">❌ Canceladas: <?php echo $estadisticas['noticias_canceladas']; ?></span>
+                            </div>
                             <a href="noticias/noticias.php" class="btn-card">Ver todos →</a>
                         </div>
                     </div>
 
-                    <!-- TARJETA: NOTICIAS PUBLICADAS -->
-                    <div class="dashboard-card">
-                        <div class="card-header">
-                            <h3>Publicadas</h3>
-                            <span class="card-icon">✅</span>
-                        </div>
-                        <div class="card-body">
-                            <p class="card-number"><?php echo $estadisticas['noticias_publicadas']; ?></p>
-                            <p class="card-label">Noticias publicadas</p>
-                            <a href="noticias/noticias.php" class="btn-card">Gestionar →</a>
-                        </div>
-                    </div>
-
-                    <!-- TARJETA: EQUIPOS -->
+                    <!-- TARJETA: EQUIPOS TOTAL -->
                     <div class="dashboard-card">
                         <div class="card-header">
                             <h3>Equipos</h3>
                             <span class="card-icon">🏆</span>
                         </div>
                         <div class="card-body">
-                            <p class="card-number"><?php echo $estadisticas['equipos']; ?></p>
+                            <p class="card-number"><?php echo $estadisticas['equipos_total']; ?></p>
                             <p class="card-label">Equipos en tabla</p>
+                            <div class="card-stats">
+                                <span class="stat-item">📌 Publicados: <?php echo $estadisticas['equipos_publicados']; ?></span>
+                                <span class="stat-item">📝 Borrador: <?php echo $estadisticas['equipos_borrador']; ?></span>
+                                <span class="stat-item">❌ Cancelados: <?php echo $estadisticas['equipos_cancelados']; ?></span>
+                            </div>
                             <a href="tabla_posiciones/tabla_posiciones.php" class="btn-card">Gestionar →</a>
                         </div>
                     </div>
@@ -113,6 +209,7 @@ $noticias_recientes = [
                         <div class="card-body">
                             <p class="card-text"><?php echo htmlspecialchars($estadisticas['lider']); ?></p>
                             <p class="card-label">Equipo en primer lugar</p>
+                            <a href="tabla_posiciones/tabla_posiciones.php" class="btn-card">Ver tabla →</a>
                         </div>
                     </div>
                 </div>

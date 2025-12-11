@@ -9,9 +9,9 @@ const DB_NAME = 'club_bolivar';
 
 // ===== CONFIGURACIÓN GENERAL =====
 const APP_NAME = 'Club Bolívar';
-const APP_URL = 'http://localhost/ClubBolivar';
-const UPLOAD_PATH = __DIR__ . '/../assets/img/uploads/';
-const UPLOAD_URL = '/ClubBolivar/assets/img/uploads/';
+const APP_URL = 'http://localhost:8000';
+const UPLOAD_PATH = __DIR__ . '/../assets/img/noticias/';
+const UPLOAD_URL = '/assets/img/noticias/';
 
 // ===== CREAR CONEXIÓN A LA BASE DE DATOS =====
 $conn = null;

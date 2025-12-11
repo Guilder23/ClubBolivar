@@ -200,6 +200,26 @@
     transform: translateX(3px);
 }
 
+/* ===== CARD STATISTICS ===== */
+.card-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 1rem 0;
+    padding: 0.8rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: #2d3748;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    line-height: 1.4;
+}
+
 /* ===== DASHBOARD SECTION ===== */
 .dashboard-section {
     background: #fff;
