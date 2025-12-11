@@ -120,6 +120,7 @@ if (empty($noticias)) {
         </div>
         <div class="footer-bottom">
             © 2025 - Club Bolívar - Todos los derechos reservados
+            <p style="margin-top: 10px; font-size: 1.1em; font-weight: 700; color: #a8bbd4ff; letter-spacing: 0.5px;">Desarrollado por <strong style="color: #c6d6f1ff;">Guilder Paredes Lovera</strong></p>
         </div>
     </footer>
 
