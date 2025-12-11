@@ -144,11 +144,11 @@ $usuario = obtener_usuario_actual();
             </div>
             <nav class="sidebar-nav">
                 <ul>
-                    <li><a href="../dashboard.php">📊 Dashboard</a></li>
-                    <li><a href="../noticias/noticias.php">📰 Gestionar Noticias</a></li>
-                    <li><a href="tabla_posiciones.php" class="active">🏆 Gestionar Posiciones</a></li>
+                    <li><a href="../dashboard.php">Dashboard</a></li>
+                    <li><a href="../noticias/noticias.php">Gestionar Noticias</a></li>
+                    <li><a href="tabla_posiciones.php" class="active">Gestionar Posiciones</a></li>
                     <li class="divider"></li>
-                    <li><a href="../../?logout=1" class="logout">🚪 Cerrar Sesión</a></li>
+                    <li><a href="../../?logout=1" class="logout">Cerrar Sesión</a></li>
                 </ul>
             </nav>
         </aside>
@@ -168,7 +168,7 @@ $usuario = obtener_usuario_actual();
             <div class="admin-body">
                 <div class="noticias-header">
                     <button class="btn-primary" onclick="abrirModalAdmin('modalCrearEquipo', 'crear')">
-                        ➕ Agregar Equipo
+                        Agregar Equipo
                     </button>
                 </div>
 
@@ -211,9 +211,9 @@ $usuario = obtener_usuario_actual();
                                             </span>
                                         </td>
                                         <td class="acciones">
-                                            <button class="btn-action btn-secondary" onclick="abrirModalAdmin('modalVerEquipo', 'ver', <?php echo $eq['id']; ?>)">👁️ Ver</button>
-                                            <button class="btn-action btn-primary" onclick="abrirModalAdmin('modalEditarEquipo', 'editar', <?php echo $eq['id']; ?>)">✏️ Editar</button>
-                                            <button class="btn-action btn-danger" onclick="abrirModalConfirmacion('eliminar_equipo', <?php echo $eq['id']; ?>, '<?php echo htmlspecialchars($eq['equipo']); ?>')">🗑️ Eliminar</button>
+                                            <button class="btn-action btn-secondary" onclick="abrirModalAdmin('modalVerEquipo', 'ver', <?php echo $eq['id']; ?>)">Ver</button>
+                                            <button class="btn-action btn-primary" onclick="abrirModalAdmin('modalEditarEquipo', 'editar', <?php echo $eq['id']; ?>)">Editar</button>
+                                            <button class="btn-action btn-danger" onclick="abrirModalConfirmacion('eliminar_equipo', <?php echo $eq['id']; ?>, '<?php echo htmlspecialchars($eq['equipo']); ?>')">Eliminar</button>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -281,7 +281,7 @@ $usuario = obtener_usuario_actual();
                     </div>
                 </div>
 
-                <button type="submit" class="btn-primary">💾 Guardar Equipo</button>
+                <button type="submit" class="btn-primary">Guardar Equipo</button>
             </form>
         </div>
     </div>

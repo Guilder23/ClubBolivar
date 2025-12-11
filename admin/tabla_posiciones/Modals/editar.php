@@ -46,5 +46,5 @@
         </div>
     </div>
 
-    <button type="submit" class="btn-primary">💾 Actualizar Equipo</button>
+    <button type="submit" class="btn-primary">Actualizar Equipo</button>
 </form>

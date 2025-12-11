@@ -34,5 +34,5 @@
         </select>
     </div>
 
-    <button type="submit" class="btn-primary">💾 Actualizar Noticia</button>
+    <button type="submit" class="btn-primary">Actualizar Noticia</button>
 </form>

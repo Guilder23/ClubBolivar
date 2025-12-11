@@ -181,11 +181,11 @@ if ($conn) {
             </div>
             <nav class="sidebar-nav">
                 <ul>
-                    <li><a href="dashboard.php" class="active">📊 Dashboard</a></li>
-                    <li><a href="noticias/noticias.php">📰 Gestionar Noticias</a></li>
-                    <li><a href="tabla_posiciones/tabla_posiciones.php">🏆 Gestionar Posiciones</a></li>
+                    <li><a href="dashboard.php" class="active">Dashboard</a></li>
+                    <li><a href="noticias/noticias.php">Gestionar Noticias</a></li>
+                    <li><a href="tabla_posiciones/tabla_posiciones.php">Gestionar Posiciones</a></li>
                     <li class="divider"></li>
-                    <li><a href="../includes/auth.php?logout=1" class="logout">🚪 Cerrar Sesión</a></li>
+                    <li><a href="../includes/auth.php?logout=1" class="logout">Cerrar Sesión</a></li>
                 </ul>
             </nav>
         </aside>
@@ -208,7 +208,7 @@ if ($conn) {
                     <div class="dashboard-card">
                         <div class="card-header">
                             <h3>Noticias</h3>
-                            <span class="card-icon">📰</span>
+                            <span class="card-icon"></span>
                         </div>
                         <div class="card-body">
                             <p class="card-number"><?php echo $estadisticas['noticias_total']; ?></p>
@@ -226,7 +226,7 @@ if ($conn) {
                     <div class="dashboard-card">
                         <div class="card-header">
                             <h3>Equipos</h3>
-                            <span class="card-icon">🏆</span>
+                            <span class="card-icon"></span>
                         </div>
                         <div class="card-body">
                             <p class="card-number"><?php echo $estadisticas['equipos_total']; ?></p>

@@ -184,7 +184,7 @@ if ($accion === 'obtener_tabla') {
                     <td><span class="badge badge-<?php echo $noticia['estado']; ?>"><?php echo ucfirst($noticia['estado']); ?></span></td>
                     <td><?php echo date('d/m/Y H:i', strtotime($noticia['fecha_creacion'])); ?></td>
                     <td>
-                        <button class="btn-action btn-primary" onclick="abrirModalAdmin('modalVerNoticia', 'ver', <?php echo $noticia['id']; ?>)">👁️ Ver</button>
+                        <button class="btn-action btn-primary" onclick="abrirModalAdmin('modalVerNoticia', 'ver', <?php echo $noticia['id']; ?>)">Ver</button>
                         <button class="btn-action btn-primary" onclick="abrirModalAdmin('modalEditarNoticia', 'editar', <?php echo $noticia['id']; ?>)">✏️ Editar</button>
                         <button class="btn-action btn-danger" onclick="abrirModalConfirmacion('eliminar_noticia', <?php echo $noticia['id']; ?>, '<?php echo htmlspecialchars($noticia['titulo']); ?>')">🗑️ Eliminar</button>
                     </td>
@@ -248,11 +248,11 @@ $usuario = obtener_usuario_actual();
             </div>
             <nav class="sidebar-nav">
                 <ul>
-                    <li><a href="../dashboard.php">📊 Dashboard</a></li>
-                    <li><a href="noticias.php" class="active">📰 Gestionar Noticias</a></li>
-                    <li><a href="../tabla_posiciones/tabla_posiciones.php">🏆 Gestionar Posiciones</a></li>
+                    <li><a href="../dashboard.php">Dashboard</a></li>
+                    <li><a href="noticias.php" class="active">Gestionar Noticias</a></li>
+                    <li><a href="../tabla_posiciones/tabla_posiciones.php">Gestionar Posiciones</a></li>
                     <li class="divider"></li>
-                    <li><a href="../../?logout=1" class="logout">🚪 Cerrar Sesión</a></li>
+                    <li><a href="../../?logout=1" class="logout">Cerrar Sesión</a></li>
                 </ul>
             </nav>
         </aside>
@@ -272,7 +272,7 @@ $usuario = obtener_usuario_actual();
             <div class="admin-body">
                 <div class="noticias-header">
                     <button class="btn-primary" onclick="abrirModalAdmin('modalCrearNoticia', 'crear')">
-                        ➕ Crear Nueva Noticia
+                        Crear Nueva Noticia
                     </button>
                 </div>
 
@@ -301,9 +301,9 @@ $usuario = obtener_usuario_actual();
                                         </td>
                                         <td><?php echo date('d/m/Y H:i', strtotime($noticia['fecha_creacion'])); ?></td>
                                         <td class="acciones">
-                                            <button class="btn-action btn-secondary" onclick="abrirModalAdmin('modalVerNoticia', 'ver', <?php echo $noticia['id']; ?>)">👁️ Ver</button>
-                                            <button class="btn-action btn-primary" onclick="abrirModalAdmin('modalEditarNoticia', 'editar', <?php echo $noticia['id']; ?>)">✏️ Editar</button>
-                                            <button class="btn-action btn-danger" onclick="abrirModalConfirmacion('eliminar_noticia', <?php echo $noticia['id']; ?>, '<?php echo htmlspecialchars($noticia['titulo']); ?>')">🗑️ Eliminar</button>
+                                            <button class="btn-action btn-secondary" onclick="abrirModalAdmin('modalVerNoticia', 'ver', <?php echo $noticia['id']; ?>)">Ver</button>
+                                            <button class="btn-action btn-primary" onclick="abrirModalAdmin('modalEditarNoticia', 'editar', <?php echo $noticia['id']; ?>)">Editar</button>
+                                            <button class="btn-action btn-danger" onclick="abrirModalConfirmacion('eliminar_noticia', <?php echo $noticia['id']; ?>, '<?php echo htmlspecialchars($noticia['titulo']); ?>')">Eliminar</button>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -355,7 +355,7 @@ $usuario = obtener_usuario_actual();
                     </select>
                 </div>
 
-                <button type="submit" class="btn-primary">💾 Guardar Noticia</button>
+                <button type="submit" class="btn-primary">Guardar Noticia</button>
             </form>
         </div>
     </div>
