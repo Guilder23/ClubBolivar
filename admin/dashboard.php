@@ -89,12 +89,14 @@ if ($conn) {
         }
     }
     
-    // Obtener últimas 5 noticias
-    $resultado = $conn->query("SELECT titulo, usuario_id, estado, fecha_actualizacion FROM noticias ORDER BY fecha_actualizacion DESC LIMIT 5");
-    if ($resultado) {
+    // Obtener últimas 3 noticias
+    $noticias_recientes = [];
+    $resultado = $conn->query("SELECT id, titulo, usuario_id, estado, fecha_actualizacion FROM noticias ORDER BY fecha_actualizacion DESC LIMIT 3");
+    if ($resultado && $resultado->num_rows > 0) {
         while ($fila = $resultado->fetch_assoc()) {
             // Obtener nombre del autor
-            $res_autor = $conn->query("SELECT nombre FROM usuarios WHERE id = " . (int)$fila['usuario_id']);
+            $usuario_id = (int)$fila['usuario_id'];
+            $res_autor = $conn->query("SELECT nombre FROM usuarios WHERE id = $usuario_id");
             $autor = 'Desconocido';
             if ($res_autor && $res_autor->num_rows > 0) {
                 $row_autor = $res_autor->fetch_assoc();
@@ -108,6 +110,30 @@ if ($conn) {
                 'fecha' => date('d/m/Y H:i', strtotime($fila['fecha_actualizacion']))
             ];
         }
+    }
+    
+    // Si no hay noticias, mostrar ejemplos
+    if (empty($noticias_recientes)) {
+        $noticias_recientes = [
+            [
+                'titulo' => 'Bienvenido a Club Bolívar',
+                'autor' => 'Administrador',
+                'estado' => 'Publicado',
+                'fecha' => '10/12/2025 20:30'
+            ],
+            [
+                'titulo' => 'Últimas Noticias del Club',
+                'autor' => 'Administrador',
+                'estado' => 'Publicado',
+                'fecha' => '10/12/2025 19:15'
+            ],
+            [
+                'titulo' => 'Próximos Partidos',
+                'autor' => 'Administrador',
+                'estado' => 'Borrador',
+                'fecha' => '10/12/2025 18:00'
+            ]
+        ];
     }
 } else {
     // Datos de ejemplo si no hay BD
@@ -256,16 +282,21 @@ if ($conn) {
                         </thead>
                         <tbody>
                             <?php
-                            foreach ($noticias_recientes as $noticia) {
-                                $estado_clase = $noticia['estado'] === 'Publicado' ? 'estado-publicado' : 'estado-borrador';
-                                echo '
-                                <tr>
-                                    <td>' . htmlspecialchars($noticia['titulo']) . '</td>
-                                    <td>' . htmlspecialchars($noticia['autor']) . '</td>
-                                    <td><span class="estado-badge ' . $estado_clase . '">' . $noticia['estado'] . '</span></td>
-                                    <td>' . $noticia['fecha'] . '</td>
-                                </tr>
-                                ';
+                            if (!empty($noticias_recientes)) {
+                                foreach ($noticias_recientes as $noticia) {
+                                    $estado_lower = strtolower($noticia['estado']);
+                                    $estado_clase = 'estado-' . $estado_lower;
+                                    echo '
+                                    <tr>
+                                        <td>' . htmlspecialchars($noticia['titulo']) . '</td>
+                                        <td>' . htmlspecialchars($noticia['autor']) . '</td>
+                                        <td><span class="estado-badge ' . $estado_clase . '">' . $noticia['estado'] . '</span></td>
+                                        <td>' . $noticia['fecha'] . '</td>
+                                    </tr>
+                                    ';
+                                }
+                            } else {
+                                echo '<tr><td colspan="4" style="text-align: center; color: #718096;">No hay noticias registradas</td></tr>';
                             }
                             ?>
                         </tbody>
