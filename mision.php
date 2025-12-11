@@ -7,7 +7,7 @@ require_once __DIR__ . '/config/database.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Misión y Visión - Club Bolívar</title>
+    <title>Misión y Visión - Bolivar por siempre</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/mision.css">
 </head>
@@ -75,7 +75,7 @@ require_once __DIR__ . '/config/database.php';
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-section about">
-                <h3>Club Bolívar</h3>
+                <h3>Bolivar por siempre</h3>
                 <p>Institución deportiva referente del país con una historia rica en éxitos y tradición.</p>
             </div>
             <div class="footer-section links">
@@ -96,7 +96,7 @@ require_once __DIR__ . '/config/database.php';
             </div>
         </div>
         <div class="footer-bottom">
-            © 2025 - Club Bolívar - Todos los derechos reservados
+            © 2025 - Bolivar por siempre - Todos los derechos reservados
             <p style="margin-top: 10px; font-size: 1.1em; font-weight: 700; color: #a8bbd4ff; letter-spacing: 0.5px;">Desarrollado por <strong style="color: #c6d6f1ff;">Guilder Paredes Lovera</strong></p>
         </div>
     </footer>

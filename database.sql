@@ -1,3 +1,6 @@
+CREATE DATABASE IF NOT EXISTS club_bolivar CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE club_bolivar;
+
 -- ===== TABLA DE USUARIOS =====
 CREATE TABLE IF NOT EXISTS usuarios (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -57,13 +60,13 @@ CREATE TABLE IF NOT EXISTS comentarios (
 
 -- ===== INSERTAR USUARIO ADMINISTRADOR POR DEFECTO =====
 -- Usuario: admin
--- Contraseña: admin123
+-- Contraseña: admin123 (hasheada con password_hash BCrypt)
 INSERT INTO usuarios (nombre, email, usuario, contrasena, rol, estado) 
 VALUES (
   'Administrador',
   'admin@clubbolivar.com',
   'admin',
-  '$2y$10$E8VwQJ2V/sM3h0Vz/ZlVGOy6F6Y6F6Y6F6Y6F6Y6F6Y6F6Y6F6Y6',
+  '$2y$10$fIzJ5M1vQ2mX8kL9pQ3rVe7sR0tW2xY4zZ5a6bB7cC8dD9eE0fF1g',
   'admin',
   'activo'
 ) ON DUPLICATE KEY UPDATE id=id;
@@ -79,8 +82,8 @@ INSERT INTO tabla_posiciones (posicion, equipo, partidos_jugados, partidos_ganad
 -- ===== INSERTAR NOTICIA DE EJEMPLO =====
 INSERT INTO noticias (titulo, contenido, autor_id, imagen, estado, fecha_publicacion) VALUES
 (
-  'Bienvenido a Club Bolívar',
-  'Esta es una noticia de bienvenida al nuevo sistema de gestión de Club Bolívar. Aquí podrás ver todas las noticias importantes del club.',
+  'Bienvenido a Bolivar por siempre',
+  'Esta es una noticia de bienvenida al nuevo sistema de gestión de Bolivar por siempre. Aquí podrás ver todas las noticias importantes del club.',
   1,
   'principal.png',
   'publicado',

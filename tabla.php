@@ -17,7 +17,7 @@ if ($conn) {
 } else {
     // Datos de ejemplo si no hay conexión a BD
     $tabla_posiciones = [
-        ['posicion' => 1, 'equipo' => 'Club Bolívar', 'partidos_jugados' => 5, 'partidos_ganados' => 4, 'partidos_empatados' => 1, 'partidos_perdidos' => 0, 'goles_favor' => 12, 'goles_contra' => 2, 'diferencia_goles' => 10, 'puntos' => 13, 'estado' => 'publicado'],
+        ['posicion' => 1, 'equipo' => 'Bolivar', 'partidos_jugados' => 5, 'partidos_ganados' => 4, 'partidos_empatados' => 1, 'partidos_perdidos' => 0, 'goles_favor' => 12, 'goles_contra' => 2, 'diferencia_goles' => 10, 'puntos' => 13, 'estado' => 'publicado'],
         ['posicion' => 2, 'equipo' => 'Strongest', 'partidos_jugados' => 5, 'partidos_ganados' => 3, 'partidos_empatados' => 2, 'partidos_perdidos' => 0, 'goles_favor' => 10, 'goles_contra' => 3, 'diferencia_goles' => 7, 'puntos' => 11, 'estado' => 'publicado'],
         ['posicion' => 3, 'equipo' => 'The Strongest', 'partidos_jugados' => 5, 'partidos_ganados' => 3, 'partidos_empatados' => 0, 'partidos_perdidos' => 2, 'goles_favor' => 9, 'goles_contra' => 5, 'diferencia_goles' => 4, 'puntos' => 9, 'estado' => 'publicado'],
         ['posicion' => 4, 'equipo' => 'Alianza', 'partidos_jugados' => 5, 'partidos_ganados' => 2, 'partidos_empatados' => 1, 'partidos_perdidos' => 2, 'goles_favor' => 8, 'goles_contra' => 7, 'diferencia_goles' => 1, 'puntos' => 7, 'estado' => 'publicado'],
@@ -30,7 +30,7 @@ if ($conn) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tabla de Posiciones - Club Bolívar</title>
+    <title>Tabla de Posiciones - Bolivar por siempre</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/tabla.css">
 </head>
@@ -94,7 +94,7 @@ if ($conn) {
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-section about">
-                <h3>Club Bolívar</h3>
+                <h3>Bolivar por siempre</h3>
                 <p>Institución deportiva referente del país con una historia rica en éxitos y tradición.</p>
             </div>
             <div class="footer-section links">
@@ -115,7 +115,7 @@ if ($conn) {
             </div>
         </div>
         <div class="footer-bottom">
-            © 2025 - Club Bolívar - Todos los derechos reservados
+            © 2025 - Bolivar por siempre - Todos los derechos reservados
             <p style="margin-top: 10px; font-size: 1.1em; font-weight: 700; color: #a8bbd4ff; letter-spacing: 0.5px;">Desarrollado por <strong style="color: #c6d6f1ff;">Guilder Paredes Lovera</strong></p>
         </div>
     </footer>

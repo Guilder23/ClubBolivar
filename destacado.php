@@ -30,7 +30,7 @@ if (empty($noticias)) {
         [
             'id' => 2,
             'titulo' => 'Preparación para el Próximo Partido',
-            'contenido' => 'El equipo continúa su preparación de cara al próximo enfrentamiento. Los entrenamientos han sido intensivos y el cuerpo técnico ha estado enfocado en mejorar aspectos defensivos y ofensivos que resultaron vulnerables en el último encuentro. La dirigencia confirmó que todos los jugadores se encuentran en óptimas condiciones físicas y mentales para afrontar los desafíos que vienen. Se espera un partido emocionante donde Club Bolívar buscará mantener su racha ganadora.',
+            'contenido' => 'El equipo continúa su preparación de cara al próximo enfrentamiento. Los entrenamientos han sido intensivos y el cuerpo técnico ha estado enfocado en mejorar aspectos defensivos y ofensivos que resultaron vulnerables en el último encuentro. La dirigencia confirmó que todos los jugadores se encuentran en óptimas condiciones físicas y mentales para afrontar los desafíos que vienen. Se espera un partido emocionante donde Bolivar por siempre buscará mantener su racha ganadora.',
             'imagen' => null,
             'fecha_actualizacion' => '2025-12-08',
             'autor' => 'Administrador'
@@ -43,7 +43,7 @@ if (empty($noticias)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lo Destacado - Club Bolívar</title>
+    <title>Lo Destacado - Bolivar por siempre</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/destacado.css">
 </head>
@@ -98,7 +98,7 @@ if (empty($noticias)) {
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-section about">
-                <h3>Club Bolívar</h3>
+                <h3>Bolivar por siempre</h3>
                 <p>Institución deportiva referente del país con una historia rica en éxitos y tradición.</p>
             </div>
             <div class="footer-section links">
@@ -119,7 +119,7 @@ if (empty($noticias)) {
             </div>
         </div>
         <div class="footer-bottom">
-            © 2025 - Club Bolívar - Todos los derechos reservados
+            © 2025 - Bolivar por siempre - Todos los derechos reservados
             <p style="margin-top: 10px; font-size: 1.1em; font-weight: 700; color: #a8bbd4ff; letter-spacing: 0.5px;">Desarrollado por <strong style="color: #c6d6f1ff;">Guilder Paredes Lovera</strong></p>
         </div>
     </footer>

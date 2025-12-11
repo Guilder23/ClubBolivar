@@ -234,7 +234,7 @@ $usuario = obtener_usuario_actual();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestionar Noticias - Club Bolívar</title>
+    <title>Gestionar Noticias - Bolivar por siempre</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/admin/dashboard.css">
     <link rel="stylesheet" href="../../assets/css/admin/noticias.css">

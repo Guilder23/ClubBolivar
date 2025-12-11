@@ -116,7 +116,7 @@ if ($conn) {
     if (empty($noticias_recientes)) {
         $noticias_recientes = [
             [
-                'titulo' => 'Bienvenido a Club Bolívar',
+                'titulo' => 'Bienvenido a Bolivar por siempre',
                 'autor' => 'Administrador',
                 'estado' => 'Publicado',
                 'fecha' => '10/12/2025 20:30'
@@ -146,16 +146,16 @@ if ($conn) {
         'equipos_publicados' => 5,
         'equipos_borrador' => 0,
         'equipos_cancelados' => 0,
-        'lider' => 'Club Bolívar',
+        'lider' => 'Bolivar por siempre',
         'top_3' => [
-            ['posicion' => 1, 'equipo' => 'Club Bolívar', 'puntos' => 13],
+            ['posicion' => 1, 'equipo' => 'Bolivar por siempre', 'puntos' => 13],
             ['posicion' => 2, 'equipo' => 'Strongest', 'puntos' => 11],
             ['posicion' => 3, 'equipo' => 'The Strongest', 'puntos' => 9]
         ]
     ];
     $noticias_recientes = [
         [
-            'titulo' => 'Bienvenido a Club Bolívar',
+            'titulo' => 'Bienvenido a Bolivar por siempre',
             'autor' => 'Administrador',
             'estado' => 'Publicado',
             'fecha' => '09/12/2025 18:27'
@@ -168,7 +168,7 @@ if ($conn) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Administrador - Club Bolívar</title>
+    <title>Panel de Administrador - Bolivar por siempre</title>
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/admin/dashboard.css">
 </head>

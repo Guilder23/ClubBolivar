@@ -42,14 +42,14 @@ if ($resultado) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Club Bolívar - Inicio</title>
+    <title>Bolivar por siempre - Inicio</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/index.css">
 </head>
 <body>
     <!-- NAVBAR -->
     <nav class="navbar-fixed">
-        <div class="logo">Club Bolívar</div>
+        <div class="logo">Bolivar por siempre</div>
         <ul>
             <li><a href="index.php">Inicio</a></li>
             <li><a href="#noticias">Noticias</a></li>
@@ -68,7 +68,7 @@ if ($resultado) {
         <!-- HERO SECTION -->
         <div class="page-header">
             <img src="assets/img/principal.png" alt="Club Bolívar">
-            <h1>Club Bolívar</h1>
+            <h1>Bolivar por siempre</h1>
         </div>
 
         <!-- NOTICIAS SECTION -->
@@ -161,7 +161,7 @@ if ($resultado) {
     <!-- FOOTER -->
     <footer class="footer">
         <div class="footer-content">
-            <p>&copy; 2025 Club Bolívar - Todos los derechos reservados</p>
+            <p>&copy; 2025 Bolivar por siempre - Todos los derechos reservados</p>
         </div>
     </footer>
 
