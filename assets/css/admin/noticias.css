@@ -103,10 +103,28 @@
     max-width: 500px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     position: relative;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+/* Scroll invisible (sin barra visible) */
+.modal-content::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: transparent;
 }
 
 .modal-lg .modal-content {
     max-width: 700px;
+    max-height: 80vh;
+    overflow-y: auto;
 }
 
 .modal-content h2 {
