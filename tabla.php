@@ -2,14 +2,28 @@
 // Incluir configuración
 require_once __DIR__ . '/config/database.php';
 
-// Obtener tabla de posiciones (datos de ejemplo)
-$tabla_posiciones = [
-    ['equipo' => 'Club Bolívar', 'partidos' => 5, 'ganados' => 4, 'empatados' => 1, 'perdidos' => 0, 'gf' => 12, 'gc' => 2, 'diferencia_goles' => 10, 'puntos' => 13],
-    ['equipo' => 'Strongest', 'partidos' => 5, 'ganados' => 3, 'empatados' => 2, 'perdidos' => 0, 'gf' => 10, 'gc' => 3, 'diferencia_goles' => 7, 'puntos' => 11],
-    ['equipo' => 'The Strongest', 'partidos' => 5, 'ganados' => 3, 'empatados' => 0, 'perdidos' => 2, 'gf' => 9, 'gc' => 5, 'diferencia_goles' => 4, 'puntos' => 9],
-    ['equipo' => 'Alianza', 'partidos' => 5, 'ganados' => 2, 'empatados' => 1, 'perdidos' => 2, 'gf' => 8, 'gc' => 7, 'diferencia_goles' => 1, 'puntos' => 7],
-    ['equipo' => 'Real Santa Cruz', 'partidos' => 5, 'ganados' => 1, 'empatados' => 0, 'perdidos' => 4, 'gf' => 5, 'gc' => 11, 'diferencia_goles' => -6, 'puntos' => 3],
-];
+// Obtener tabla de posiciones de la base de datos
+$tabla_posiciones = [];
+
+if ($conn) {
+    $query = "SELECT * FROM tabla_posiciones WHERE estado = 'publicado' ORDER BY posicion ASC";
+    $result = mysqli_query($conn, $query);
+    
+    if ($result) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $tabla_posiciones[] = $row;
+        }
+    }
+} else {
+    // Datos de ejemplo si no hay conexión a BD
+    $tabla_posiciones = [
+        ['posicion' => 1, 'equipo' => 'Club Bolívar', 'partidos_jugados' => 5, 'partidos_ganados' => 4, 'partidos_empatados' => 1, 'partidos_perdidos' => 0, 'goles_favor' => 12, 'goles_contra' => 2, 'diferencia_goles' => 10, 'puntos' => 13, 'estado' => 'publicado'],
+        ['posicion' => 2, 'equipo' => 'Strongest', 'partidos_jugados' => 5, 'partidos_ganados' => 3, 'partidos_empatados' => 2, 'partidos_perdidos' => 0, 'goles_favor' => 10, 'goles_contra' => 3, 'diferencia_goles' => 7, 'puntos' => 11, 'estado' => 'publicado'],
+        ['posicion' => 3, 'equipo' => 'The Strongest', 'partidos_jugados' => 5, 'partidos_ganados' => 3, 'partidos_empatados' => 0, 'partidos_perdidos' => 2, 'goles_favor' => 9, 'goles_contra' => 5, 'diferencia_goles' => 4, 'puntos' => 9, 'estado' => 'publicado'],
+        ['posicion' => 4, 'equipo' => 'Alianza', 'partidos_jugados' => 5, 'partidos_ganados' => 2, 'partidos_empatados' => 1, 'partidos_perdidos' => 2, 'goles_favor' => 8, 'goles_contra' => 7, 'diferencia_goles' => 1, 'puntos' => 7, 'estado' => 'publicado'],
+        ['posicion' => 5, 'equipo' => 'Real Santa Cruz', 'partidos_jugados' => 5, 'partidos_ganados' => 1, 'partidos_empatados' => 0, 'partidos_perdidos' => 4, 'goles_favor' => 5, 'goles_contra' => 11, 'diferencia_goles' => -6, 'puntos' => 3, 'estado' => 'publicado'],
+    ];
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -41,27 +55,31 @@ $tabla_posiciones = [
                         <th>GC</th>
                         <th>DG</th>
                         <th>Pts</th>
+                        <th>Estado</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php 
-                    $pos = 1;
                     foreach($tabla_posiciones as $equipo): 
                     ?>
                     <tr>
-                        <td><span class="position-badge"><?php echo $pos; ?></span></td>
+                        <td><span class="position-badge"><?php echo $equipo['posicion']; ?></span></td>
                         <td><strong><?php echo $equipo['equipo']; ?></strong></td>
-                        <td><?php echo $equipo['partidos']; ?></td>
-                        <td><?php echo $equipo['ganados']; ?></td>
-                        <td><?php echo $equipo['empatados']; ?></td>
-                        <td><?php echo $equipo['perdidos']; ?></td>
-                        <td><?php echo $equipo['gf']; ?></td>
-                        <td><?php echo $equipo['gc']; ?></td>
+                        <td><?php echo $equipo['partidos_jugados']; ?></td>
+                        <td><?php echo $equipo['partidos_ganados']; ?></td>
+                        <td><?php echo $equipo['partidos_empatados']; ?></td>
+                        <td><?php echo $equipo['partidos_perdidos']; ?></td>
+                        <td><?php echo $equipo['goles_favor']; ?></td>
+                        <td><?php echo $equipo['goles_contra']; ?></td>
                         <td><?php echo ($equipo['diferencia_goles'] >= 0 ? '+' : '') . $equipo['diferencia_goles']; ?></td>
                         <td><strong><?php echo $equipo['puntos']; ?></strong></td>
+                        <td>
+                            <span class="estado-badge estado-<?php echo strtolower($equipo['estado']); ?>">
+                                <?php echo ucfirst($equipo['estado']); ?>
+                            </span>
+                        </td>
                     </tr>
                     <?php 
-                        $pos++;
                         endforeach; 
                         ?>
                 </tbody>

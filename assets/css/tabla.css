@@ -188,6 +188,32 @@ body {
     font-size: 0.9rem;
 }
 
+/* ===== ESTADO BADGES ===== */
+.estado-badge {
+    display: inline-block;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.estado-publicado {
+    background-color: #c6f6d5;
+    color: #22543d;
+}
+
+.estado-borrador {
+    background-color: #feebc8;
+    color: #7c2d12;
+}
+
+.estado-cancelado {
+    background-color: #fed7d7;
+    color: #742a2a;
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
     .section-content h1 {

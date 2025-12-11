@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $accion === 'crear') {
     } else {
         $consulta = "INSERT INTO tabla_posiciones 
                      (posicion, equipo, partidos_jugados, partidos_ganados, partidos_empatados, partidos_perdidos, goles_favor, goles_contra, estado) 
-                     VALUES ($posicion, '$equipo', $partidos_jugados, $partidos_ganados, $partidos_empatados, $partidos_perdidos, $goles_favor, $goles_contra, 'activo')";
+                     VALUES ($posicion, '$equipo', $partidos_jugados, $partidos_ganados, $partidos_empatados, $partidos_perdidos, $goles_favor, $goles_contra, 'publicado')";
         
         if ($conn && $conn->query($consulta)) {
             $respuesta = ['exito' => true, 'mensaje' => 'Equipo agregado exitosamente'];
@@ -114,7 +114,7 @@ if ($accion === 'eliminar' && isset($_GET['id'])) {
 // OBTENER TODOS LOS EQUIPOS
 $equipos = [];
 if ($conn) {
-    $resultado = $conn->query("SELECT * FROM tabla_posiciones WHERE estado = 'activo' ORDER BY posicion ASC");
+    $resultado = $conn->query("SELECT * FROM tabla_posiciones ORDER BY posicion ASC");
     
     if ($resultado) {
         while ($fila = $resultado->fetch_assoc()) {
@@ -187,6 +187,7 @@ $usuario = obtener_usuario_actual();
                                 <th>GC</th>
                                 <th>DG</th>
                                 <th>Pts</th>
+                                <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -204,6 +205,11 @@ $usuario = obtener_usuario_actual();
                                         <td><?php echo $eq['goles_contra']; ?></td>
                                         <td><?php echo $eq['diferencia_goles']; ?></td>
                                         <td><strong><?php echo $eq['puntos']; ?></strong></td>
+                                        <td>
+                                            <span class="estado-badge estado-<?php echo strtolower($eq['estado']); ?>">
+                                                <?php echo ucfirst($eq['estado']); ?>
+                                            </span>
+                                        </td>
                                         <td class="acciones">
                                             <button class="btn-action btn-secondary" onclick="abrirModalAdmin('modalVerEquipo', 'ver', <?php echo $eq['id']; ?>)">👁️ Ver</button>
                                             <button class="btn-action btn-primary" onclick="abrirModalAdmin('modalEditarEquipo', 'editar', <?php echo $eq['id']; ?>)">✏️ Editar</button>
@@ -213,7 +219,7 @@ $usuario = obtener_usuario_actual();
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
-                                    <td colspan="11" class="text-center">No hay equipos registrados</td>
+                                    <td colspan="12" class="text-center">No hay equipos registrados</td>
                                 </tr>
                             <?php endif; ?>
                         </tbody>

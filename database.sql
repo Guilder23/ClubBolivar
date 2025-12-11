@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS tabla_posiciones (
   goles_contra INT DEFAULT 0,
   diferencia_goles INT GENERATED ALWAYS AS (goles_favor - goles_contra) STORED,
   puntos INT GENERATED ALWAYS AS ((partidos_ganados * 3) + partidos_empatados) STORED,
-  estado ENUM('activo', 'inactivo') DEFAULT 'activo',
+  estado ENUM('publicado', 'borrador', 'cancelado') DEFAULT 'publicado',
   fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   INDEX idx_posicion (posicion),
   INDEX idx_estado (estado)
@@ -61,11 +61,11 @@ VALUES (
 
 -- ===== INSERTAR DATOS DE EJEMPLO PARA TABLA DE POSICIONES =====
 INSERT INTO tabla_posiciones (posicion, equipo, partidos_jugados, partidos_ganados, partidos_empatados, partidos_perdidos, goles_favor, goles_contra, estado) VALUES
-(1, 'Club Bolívar', 10, 8, 0, 2, 22, 7, 'activo'),
-(2, 'Equipo 2', 10, 6, 0, 4, 16, 8, 'activo'),
-(3, 'Equipo 3', 10, 5, 0, 5, 14, 12, 'activo'),
-(4, 'Equipo 4', 10, 4, 2, 4, 13, 12, 'activo'),
-(5, 'Equipo 5', 10, 3, 3, 4, 11, 14, 'activo');
+(1, 'Club Bolívar', 10, 8, 0, 2, 22, 7, 'publicado'),
+(2, 'Equipo 2', 10, 6, 0, 4, 16, 8, 'publicado'),
+(3, 'Equipo 3', 10, 5, 0, 5, 14, 12, 'publicado'),
+(4, 'Equipo 4', 10, 4, 2, 4, 13, 12, 'publicado'),
+(5, 'Equipo 5', 10, 3, 3, 4, 11, 14, 'publicado');
 
 -- ===== INSERTAR NOTICIA DE EJEMPLO =====
 INSERT INTO noticias (titulo, contenido, autor_id, imagen, estado, fecha_publicacion) VALUES
