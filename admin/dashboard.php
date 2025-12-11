@@ -80,6 +80,15 @@ if ($conn) {
         $estadisticas['lider'] = $row['equipo'];
     }
     
+    // Obtener top 3 equipos
+    $estadisticas['top_3'] = [];
+    $resultado = $conn->query("SELECT posicion, equipo, puntos FROM tabla_posiciones WHERE estado = 'publicado' ORDER BY puntos DESC LIMIT 3");
+    if ($resultado) {
+        while ($fila = $resultado->fetch_assoc()) {
+            $estadisticas['top_3'][] = $fila;
+        }
+    }
+    
     // Obtener últimas 5 noticias
     $resultado = $conn->query("SELECT titulo, usuario_id, estado, fecha_actualizacion FROM noticias ORDER BY fecha_actualizacion DESC LIMIT 5");
     if ($resultado) {
@@ -111,7 +120,12 @@ if ($conn) {
         'equipos_publicados' => 5,
         'equipos_borrador' => 0,
         'equipos_cancelados' => 0,
-        'lider' => 'Club Bolívar'
+        'lider' => 'Club Bolívar',
+        'top_3' => [
+            ['posicion' => 1, 'equipo' => 'Club Bolívar', 'puntos' => 13],
+            ['posicion' => 2, 'equipo' => 'Strongest', 'puntos' => 11],
+            ['posicion' => 3, 'equipo' => 'The Strongest', 'puntos' => 9]
+        ]
     ];
     $noticias_recientes = [
         [
@@ -200,15 +214,29 @@ if ($conn) {
                         </div>
                     </div>
 
-                    <!-- TARJETA: LÍDER -->
+                    <!-- TARJETA: TOP 3 EQUIPOS -->
                     <div class="dashboard-card">
                         <div class="card-header">
-                            <h3>Líder</h3>
-                            <span class="card-icon">⭐</span>
+                            <h3>Top 3</h3>
+                            <span class="card-icon">🏅</span>
                         </div>
                         <div class="card-body">
-                            <p class="card-text"><?php echo htmlspecialchars($estadisticas['lider']); ?></p>
-                            <p class="card-label">Equipo en primer lugar</p>
+                            <div class="top-3-list">
+                                <?php 
+                                if (!empty($estadisticas['top_3'])) {
+                                    foreach ($estadisticas['top_3'] as $idx => $equipo) {
+                                        $medal = ['🥇', '🥈', '🥉'][$idx] ?? '🏅';
+                                        echo '<div class="top-3-item">';
+                                        echo '<span class="medal">' . $medal . '</span>';
+                                        echo '<span class="team-name">' . htmlspecialchars($equipo['equipo']) . '</span>';
+                                        echo '<span class="points">' . $equipo['puntos'] . ' pts</span>';
+                                        echo '</div>';
+                                    }
+                                } else {
+                                    echo '<p style="color: #718096;">No hay equipos publicados</p>';
+                                }
+                                ?>
+                            </div>
                             <a href="tabla_posiciones/tabla_posiciones.php" class="btn-card">Ver tabla →</a>
                         </div>
                     </div>
