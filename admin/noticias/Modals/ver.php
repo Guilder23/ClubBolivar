@@ -12,7 +12,6 @@
     </div>
 
     <div class="modal-actions">
-        <button class="btn-primary" onclick="abrirModalAdmin('modalEditarNoticia', 'editar', <?php echo $noticia['id']; ?>); cerrarModalAdmin('modalVerNoticia');">Editar</button>
         <button class="btn-secondary" onclick="cerrarModalAdmin('modalVerNoticia')">Cerrar</button>
     </div>
 </div>
