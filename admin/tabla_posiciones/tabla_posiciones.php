@@ -95,8 +95,8 @@ if ($accion && in_array($accion, ['editar', 'ver']) && isset($_GET['id'])) {
 }
 
 // ELIMINAR EQUIPO
-if ($accion === 'eliminar' && isset($_GET['id'])) {
-    $id = (int)$_GET['id'];
+if ($accion === 'eliminar' && isset($_POST['id'])) {
+    $id = (int)$_POST['id'];
     $consulta = "DELETE FROM tabla_posiciones WHERE id = $id";
     
     if ($conn && $conn->query($consulta)) {
@@ -213,7 +213,7 @@ $usuario = obtener_usuario_actual();
                                         <td class="acciones">
                                             <button class="btn-action btn-secondary" onclick="abrirModalAdmin('modalVerEquipo', 'ver', <?php echo $eq['id']; ?>)">👁️ Ver</button>
                                             <button class="btn-action btn-primary" onclick="abrirModalAdmin('modalEditarEquipo', 'editar', <?php echo $eq['id']; ?>)">✏️ Editar</button>
-                                            <a href="?accion=eliminar&id=<?php echo $eq['id']; ?>" class="btn-action btn-danger" onclick="return confirm('¿Está seguro de que desea eliminar este equipo?')">🗑️ Eliminar</a>
+                                            <button class="btn-action btn-danger" onclick="abrirModalConfirmacion('eliminar_equipo', <?php echo $eq['id']; ?>, '<?php echo htmlspecialchars($eq['equipo']); ?>')">🗑️ Eliminar</button>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -307,6 +307,65 @@ $usuario = obtener_usuario_actual();
         </div>
     </div>
 
+    <!-- MODAL CONFIRMACIÓN ELIMINAR -->
+    <div id="modalConfirmacion" class="modal">
+        <div class="modal-content modal-confirm">
+            <h2 id="confirmTitulo">Confirmar Eliminación</h2>
+            <p id="confirmMensaje"></p>
+            <div class="modal-actions">
+                <button class="btn-action btn-cancel" onclick="cerrarModalAdmin('modalConfirmacion')">Cancelar</button>
+                <button id="btnConfirmarEliminacion" class="btn-action btn-danger">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
     <script src="../../assets/js/admin/admin.js"></script>
+    <script>
+        // ===== FUNCIONES DE CONFIRMACIÓN Y RECARGA =====
+        function abrirModalConfirmacion(tipo, id, nombre_equipo) {
+            const modal = document.getElementById('modalConfirmacion');
+            const confirmTitulo = document.getElementById('confirmTitulo');
+            const confirmMensaje = document.getElementById('confirmMensaje');
+            const btnConfirmar = document.getElementById('btnConfirmarEliminacion');
+            
+            confirmTitulo.textContent = 'Confirmar Eliminación';
+            confirmMensaje.textContent = `¿Estás seguro de que deseas eliminar "${nombre_equipo}"?`;
+            
+            // Limpiar evento anterior
+            btnConfirmar.onclick = null;
+            
+            // Agregar nuevo evento
+            btnConfirmar.onclick = function() {
+                eliminarEquipo(id);
+            };
+            
+            abrirModalAdmin('modalConfirmacion');
+        }
+
+        function eliminarEquipo(id) {
+            const formData = new FormData();
+            formData.append('accion', 'eliminar');
+            formData.append('id', id);
+
+            fetch('tabla_posiciones.php', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.exito) {
+                        mostrarAlertaAdmin('success', data.mensaje);
+                        cerrarModalAdmin('modalConfirmacion');
+                        setTimeout(() => location.reload(), 1500);
+                    } else {
+                        mostrarAlertaAdmin('error', data.mensaje);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    mostrarAlertaAdmin('error', 'Error al eliminar el equipo');
+                });
+        }
+    </script>
 </body>
 </html>
