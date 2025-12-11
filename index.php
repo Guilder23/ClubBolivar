@@ -24,12 +24,13 @@ if ($conn) {
     }
     
     // Obtener última noticia publicada
-    $resultado = $conn->query("SELECT titulo, contenido, fecha_actualizacion FROM noticias WHERE estado = 'publicado' ORDER BY fecha_actualizacion DESC LIMIT 1");
+    $resultado = $conn->query("SELECT titulo, contenido, imagen, fecha_actualizacion FROM noticias WHERE estado = 'publicado' ORDER BY fecha_actualizacion DESC LIMIT 1");
     if ($resultado && $resultado->num_rows > 0) {
         $noticia = $resultado->fetch_assoc();
         $ultima_noticia = [
             'titulo' => $noticia['titulo'],
             'contenido' => substr($noticia['contenido'], 0, 150) . '...',
+            'imagen' => $noticia['imagen'],
             'fecha' => date('d/m/Y', strtotime($noticia['fecha_actualizacion']))
         ];
     }
@@ -48,6 +49,7 @@ if (!$ultima_noticia) {
     $ultima_noticia = [
         'titulo' => 'Bienvenido a Club Bolívar',
         'contenido' => 'Mantente informado con las últimas noticias, eventos y comunicados oficiales del Club Bolívar.',
+        'imagen' => null,
         'fecha' => '10/12/2025'
     ];
 }
@@ -83,7 +85,14 @@ if (!$ultima_noticia) {
             <!-- Card Noticias -->
             <div class="card-main card-1 card-with-image" id="noticias">
                 <div class="card-header-image">
-                    <img src="assets/img/gol.jpg" alt="Noticias">
+                    <?php 
+                    if (!empty($ultima_noticia['imagen'])) {
+                        $imagen_url = 'assets/img/noticias/' . htmlspecialchars($ultima_noticia['imagen']);
+                        echo '<img src="' . $imagen_url . '" alt="' . htmlspecialchars($ultima_noticia['titulo']) . '">';
+                    } else {
+                        echo '<img src="assets/img/gol.jpg" alt="Noticias">';
+                    }
+                    ?>
                 </div>
                 <div class="card-content">
                     <span class="card-title">NOTICIAS</span>

@@ -113,20 +113,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $accion === 'editar') {
     if (empty($titulo) || empty($contenido)) {
         $respuesta = ['exito' => false, 'mensaje' => 'Todos los campos son requeridos'];
     } else {
-        $fecha_publicacion = ($estado === 'publicado') ? date('Y-m-d H:i:s') : NULL;
-        
-        $consulta = "UPDATE noticias SET 
-                     titulo = '$titulo',
-                     contenido = '$contenido',
-                     estado = '$estado',
-                     fecha_publicacion = " . ($fecha_publicacion ? "'$fecha_publicacion'" : "NULL") . "
-                     WHERE id = $id";
-        
-        if ($conn && $conn->query($consulta)) {
-            $respuesta = ['exito' => true, 'mensaje' => 'Noticia actualizada exitosamente'];
-        } else {
-            $error_msg = $conn ? $conn->error : 'No hay conexión a la base de datos';
-            $respuesta = ['exito' => false, 'mensaje' => 'Error al actualizar: ' . $error_msg];
+        try {
+            // Obtener datos actuales de la noticia
+            $resultado_actual = $conn->query("SELECT imagen FROM noticias WHERE id = $id LIMIT 1");
+            $noticia_actual = $resultado_actual->fetch_assoc();
+            $imagen = $noticia_actual['imagen']; // Mantener imagen actual por defecto
+            
+            // Procesar imagen si se subió una nueva
+            if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] !== UPLOAD_ERR_NO_FILE) {
+                $imagen = procesar_imagen_noticia($_FILES['imagen']);
+            }
+            
+            $fecha_publicacion = ($estado === 'publicado') ? date('Y-m-d H:i:s') : NULL;
+            $imagen_valor = $imagen ? "'$imagen'" : 'NULL';
+            
+            $consulta = "UPDATE noticias SET 
+                         titulo = '$titulo',
+                         contenido = '$contenido',
+                         imagen = $imagen_valor,
+                         estado = '$estado',
+                         fecha_publicacion = " . ($fecha_publicacion ? "'$fecha_publicacion'" : "NULL") . ",
+                         fecha_actualizacion = NOW()
+                         WHERE id = $id";
+            
+            if ($conn && $conn->query($consulta)) {
+                $respuesta = ['exito' => true, 'mensaje' => 'Noticia actualizada exitosamente'];
+            } else {
+                $error_msg = $conn ? $conn->error : 'No hay conexión a la base de datos';
+                $respuesta = ['exito' => false, 'mensaje' => 'Error al actualizar: ' . $error_msg];
+            }
+        } catch (Exception $e) {
+            $respuesta = ['exito' => false, 'mensaje' => 'Error: ' . $e->getMessage()];
         }
     }
     
@@ -322,8 +339,11 @@ $usuario = obtener_usuario_actual();
 
                 <div class="form-group">
                     <label for="imagen">Imagen:</label>
-                    <input type="file" id="imagen" name="imagen" accept="image/*">
-                    <small>Formatos aceptados: JPG, PNG, GIF. Tamaño máximo: 5MB</small>
+                    <div class="preview-container">
+                        <div id="imagenPreviewCrear" class="imagen-preview-placeholder">Vista previa</div>
+                    </div>
+                    <input type="file" id="imagen" name="imagen" accept="image/*" onchange="previewImagen(event)">
+                    <small style="color: #718096;">Formatos aceptados: JPG, PNG, GIF. Tamaño máximo: 5MB</small>
                 </div>
 
                 <div class="form-group">
@@ -436,6 +456,35 @@ $usuario = obtener_usuario_actual();
                     console.error('Error:', error);
                     mostrarAlertaAdmin('error', 'Error al recargar la tabla');
                 });
+        }
+
+        // ===== VISTA PREVIA DE IMAGEN =====
+        function previewImagen(event) {
+            const file = event.target.files[0];
+            const previewDiv = document.getElementById('imagenPreviewCrear');
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewDiv.innerHTML = '<img src="' + e.target.result + '" alt="Vista previa" class="imagen-preview">';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                previewDiv.innerHTML = '<div class="imagen-preview-placeholder">Vista previa</div>';
+            }
+        }
+
+        function previewImagenEditar(event) {
+            const file = event.target.files[0];
+            const previewDiv = document.getElementById('imagenPreview');
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewDiv.innerHTML = '<img src="' + e.target.result + '" alt="Vista previa" class="imagen-preview">';
+                };
+                reader.readAsDataURL(file);
+            }
         }
     </script>
 </body>

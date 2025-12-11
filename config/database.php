@@ -62,7 +62,7 @@ function es_admin() {
 function requerir_autenticacion() {
     if (!estoy_autenticado()) {
         $_SESSION['error'] = 'Debes iniciar sesión para acceder a esta página.';
-        header('Location: /ClubBolivar/index.php');
+        header('Location: /index.php');
         exit();
     }
 }
@@ -73,7 +73,7 @@ function requerir_autenticacion() {
 function requerir_admin() {
     if (!es_admin()) {
         $_SESSION['error'] = 'No tienes permisos para acceder a esta página.';
-        header('Location: /ClubBolivar/index.php');
+        header('Location: /index.php');
         exit();
     }
 }
