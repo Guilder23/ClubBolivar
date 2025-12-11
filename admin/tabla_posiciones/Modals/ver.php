@@ -52,10 +52,17 @@
                 <span class="stat-value"><?php echo $equipo['diferencia_goles'] >= 0 ? '+' : ''; ?><?php echo $equipo['diferencia_goles']; ?></span>
             </div>
         </div>
+
+        <div class="stat-row">
+            <div class="stat-item full-width">
+                <span class="stat-label">Estado</span>
+                <span class="estado-badge estado-<?php echo strtolower($equipo['estado']); ?>"><?php echo ucfirst($equipo['estado']); ?></span>
+            </div>
+        </div>
     </div>
 
     <div class="modal-actions">
-        <button class="btn-primary" onclick="abrirModalAdmin('modalEditarEquipo', 'editar', <?php echo $equipo['id']; ?>); cerrarModalAdmin('modalVerEquipo');">✏️ Editar</button>
+        <button class="btn-primary" onclick="abrirModalAdmin('modalEditarEquipo', 'editar', <?php echo $equipo['id']; ?>); cerrarModalAdmin('modalVerEquipo');">Editar</button>
         <button class="btn-secondary" onclick="cerrarModalAdmin('modalVerEquipo')">Cerrar</button>
     </div>
 </div>

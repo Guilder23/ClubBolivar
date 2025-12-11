@@ -49,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $accion === 'editar') {
     $partidos_perdidos = (int)($_POST['partidos_perdidos'] ?? 0);
     $goles_favor = (int)($_POST['goles_favor'] ?? 0);
     $goles_contra = (int)($_POST['goles_contra'] ?? 0);
+    $estado = escapar($_POST['estado'] ?? 'publicado');
     
     if (empty($equipo) || $posicion === 0) {
         $respuesta = ['exito' => false, 'mensaje' => 'Posición y equipo son requeridos'];
@@ -61,7 +62,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $accion === 'editar') {
                      partidos_empatados = $partidos_empatados,
                      partidos_perdidos = $partidos_perdidos,
                      goles_favor = $goles_favor,
-                     goles_contra = $goles_contra
+                     goles_contra = $goles_contra,
+                     estado = '$estado'
                      WHERE id = $id";
         
         if ($conn && $conn->query($consulta)) {

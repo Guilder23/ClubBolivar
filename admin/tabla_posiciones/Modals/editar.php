@@ -46,5 +46,16 @@
         </div>
     </div>
 
+    <div class="form-row">
+        <div class="form-group">
+            <label for="estado">Estado:</label>
+            <select id="estado" name="estado" required>
+                <option value="publicado" <?php echo ($equipo['estado'] === 'publicado') ? 'selected' : ''; ?>>Publicado</option>
+                <option value="borrador" <?php echo ($equipo['estado'] === 'borrador') ? 'selected' : ''; ?>>Borrador</option>
+                <option value="cancelado" <?php echo ($equipo['estado'] === 'cancelado') ? 'selected' : ''; ?>>Cancelado</option>
+            </select>
+        </div>
+    </div>
+
     <button type="submit" class="btn-primary">Actualizar Equipo</button>
 </form>
