@@ -2,12 +2,55 @@
 // Incluir configuración
 require_once __DIR__ . '/config/database.php';
 
-// Obtener tabla de posiciones (datos de ejemplo)
-$tabla_posiciones = [
-    ['equipo' => 'Club Bolívar', 'partidos' => 5, 'ganados' => 4, 'empatados' => 1, 'perdidos' => 0, 'gf' => 12, 'gc' => 2, 'diferencia_goles' => 10, 'puntos' => 13],
-    ['equipo' => 'Strongest', 'partidos' => 5, 'ganados' => 3, 'empatados' => 2, 'perdidos' => 0, 'gf' => 10, 'gc' => 3, 'diferencia_goles' => 7, 'puntos' => 11],
-    ['equipo' => 'The Strongest', 'partidos' => 5, 'ganados' => 3, 'empatados' => 0, 'perdidos' => 2, 'gf' => 9, 'gc' => 5, 'diferencia_goles' => 4, 'puntos' => 9],
-];
+// Obtener últimas 3 equipos publicados o datos de ejemplo
+$tabla_posiciones = [];
+$ultima_noticia = null;
+
+if ($conn) {
+    // Obtener últimos 3 equipos publicados ordenados por puntos
+    $resultado = $conn->query("SELECT equipo, partidos_jugados, partidos_ganados, partidos_empatados, partidos_perdidos, diferencia_goles, puntos FROM tabla_posiciones WHERE estado = 'publicado' ORDER BY puntos DESC LIMIT 3");
+    if ($resultado && $resultado->num_rows > 0) {
+        while ($fila = $resultado->fetch_assoc()) {
+            $tabla_posiciones[] = [
+                'equipo' => $fila['equipo'],
+                'partidos' => $fila['partidos_jugados'],
+                'ganados' => $fila['partidos_ganados'],
+                'empatados' => $fila['partidos_empatados'],
+                'perdidos' => $fila['partidos_perdidos'],
+                'diferencia_goles' => $fila['diferencia_goles'],
+                'puntos' => $fila['puntos']
+            ];
+        }
+    }
+    
+    // Obtener última noticia publicada
+    $resultado = $conn->query("SELECT titulo, contenido, fecha_actualizacion FROM noticias WHERE estado = 'publicado' ORDER BY fecha_actualizacion DESC LIMIT 1");
+    if ($resultado && $resultado->num_rows > 0) {
+        $noticia = $resultado->fetch_assoc();
+        $ultima_noticia = [
+            'titulo' => $noticia['titulo'],
+            'contenido' => substr($noticia['contenido'], 0, 150) . '...',
+            'fecha' => date('d/m/Y', strtotime($noticia['fecha_actualizacion']))
+        ];
+    }
+}
+
+// Datos de ejemplo si no hay BD o si está vacía
+if (empty($tabla_posiciones)) {
+    $tabla_posiciones = [
+        ['equipo' => 'Club Bolívar', 'partidos' => 5, 'ganados' => 4, 'empatados' => 1, 'perdidos' => 0, 'diferencia_goles' => 10, 'puntos' => 13],
+        ['equipo' => 'Strongest', 'partidos' => 5, 'ganados' => 3, 'empatados' => 2, 'perdidos' => 0, 'diferencia_goles' => 7, 'puntos' => 11],
+        ['equipo' => 'The Strongest', 'partidos' => 5, 'ganados' => 3, 'empatados' => 0, 'perdidos' => 2, 'diferencia_goles' => 4, 'puntos' => 9],
+    ];
+}
+
+if (!$ultima_noticia) {
+    $ultima_noticia = [
+        'titulo' => 'Bienvenido a Club Bolívar',
+        'contenido' => 'Mantente informado con las últimas noticias, eventos y comunicados oficiales del Club Bolívar.',
+        'fecha' => '10/12/2025'
+    ];
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -44,7 +87,9 @@ $tabla_posiciones = [
                 </div>
                 <div class="card-content">
                     <span class="card-title">NOTICIAS</span>
-                    <p class="card-desc">Mantente informado con las últimas noticias, eventos y comunicados oficiales del Club Bolívar.</p>
+                    <p class="card-date" style="font-size: 0.85rem; color: #5a7bb7; margin-bottom: 0.5rem;"><?php echo $ultima_noticia['fecha']; ?></p>
+                    <p class="card-desc"><?php echo htmlspecialchars($ultima_noticia['titulo']); ?></p>
+                    <p class="card-desc" style="font-size: 0.9rem; color: #718096;"><?php echo htmlspecialchars($ultima_noticia['contenido']); ?></p>
                     <a href="destacado.php" class="card-btn">Ver más</a>
                 </div>
             </div>

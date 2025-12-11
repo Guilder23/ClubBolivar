@@ -140,7 +140,7 @@ $usuario = obtener_usuario_actual();
         <!-- SIDEBAR -->
         <aside class="sidebar">
             <div class="sidebar-header">
-                <h3>Club Bolívar Admin</h3>
+                <h3>BOLIVAR por siempre</h3>
             </div>
             <nav class="sidebar-nav">
                 <ul>
